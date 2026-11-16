@@ -8,7 +8,7 @@
   <meta property="og:title" content="Spaces Prototype">
   <meta property="og:description" content="One hangout, live across every device, then it turns itself off. A Product@TAMU concept prototype.">
   <meta property="og:image" content="screenshots/beat-3-live.png">
-  <meta name="theme-color" content="#0b0b10">
+  <meta name="theme-color" content="#0a0a0c">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230A84FF'/%3E%3Ccircle cx='9.5' cy='12' r='5' fill='none' stroke='white' stroke-width='1.8'/%3E%3Ccircle cx='14.5' cy='12' r='5' fill='none' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/stage.css">
@@ -20,11 +20,10 @@
     <div id="stage">
       <header class="topbar">
         <div class="brand">
-          <span class="brand-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="12" r="6.2"/><circle cx="15" cy="12" r="6.2"/></svg></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="9" cy="12" r="6.2"/><circle cx="15" cy="12" r="6.2"/></svg>
           <b>Spaces</b>
-          <span class="brand-sub">One hangout, live on every device. Then it turns itself off.</span>
         </div>
-        <div class="topbar-r"><span class="pill-concept">Concept prototype</span></div>
+        <p class="topbar-note">Concept prototype by Product@TAMU students. Not affiliated with Apple.</p>
       </header>
 
       <section class="slot slot-maya" data-dev="maya">
@@ -41,11 +40,10 @@
       </section>
 
       <div class="captions">
-        <span class="cap-k">1 / 6</span>
+        <span class="cap-k">Step 1 of 6</span>
         <div class="cap-body"><b class="cap-t"></b><span class="cap-s"></span></div>
       </div>
       <div id="taps"></div>
-      <footer class="legal">Concept prototype by Product@TAMU students. Not affiliated with Apple.</footer>
     </div>
   </div>
 
@@ -54,13 +52,15 @@
   </nav>
   <nav id="stepbar" aria-label="Demo controls"></nav>
   <div class="keys-help" role="dialog" aria-label="Keyboard shortcuts">
-    <b>Shortcuts</b>
-    <div><kbd>←</kbd><kbd>→</kbd> Previous / next beat</div>
-    <div><kbd>Space</kbd> Autoplay</div>
-    <div><kbd>1</kbd>–<kbd>6</kbd> Jump to a beat</div>
-    <div><kbd>F</kbd> Guided / Free Play</div>
-    <div><kbd>H</kbd> Hide controls (clean recording)</div>
-    <div><kbd>R</kbd> Reset</div>
+    <h2>Keyboard shortcuts</h2>
+    <dl>
+      <div><dt>Previous / next step</dt><dd><kbd>←</kbd><kbd>→</kbd></dd></div>
+      <div><dt>Autoplay</dt><dd><kbd>Space</kbd></dd></div>
+      <div><dt>Jump to a step</dt><dd><kbd>1</kbd>–<kbd>6</kbd></dd></div>
+      <div><dt>Guided / Free Play</dt><dd><kbd>F</kbd></dd></div>
+      <div><dt>Hide controls for recording</dt><dd><kbd>H</kbd></dd></div>
+      <div><dt>Reset</dt><dd><kbd>R</kbd></dd></div>
+    </dl>
   </div>
   <div id="toast" role="status"></div>
   <noscript><p style="padding:24px;font:16px system-ui">This prototype needs JavaScript.</p></noscript>

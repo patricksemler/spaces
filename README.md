@@ -16,7 +16,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 | Key | Action |
 |---|---|
 | ← / → | Previous / next beat |
-| Space | Autoplay (plays each beat, holds about 3 s, moves on) |
+| Space | Pause or resume autoplay (on by default; add `?autoplay=0` to start paused) |
 | 1–6 | Jump to a beat |
 | F | Switch between Guided and Free Play |
 | H | Hide controls and captions (for clean screen recording) |

@@ -336,6 +336,8 @@ if (params.get('mode') === 'free') {
   setMode('free');
 } else {
   const isStatic = params.get('static') === '1';
+  // Autoplay is on by default (off for static/frozen captures, reduced motion, or ?autoplay=0)
+  if (!isStatic && !frozen && !reduced && params.get('autoplay') !== '0') store.dispatch({ type: 'SET_UI', patch: { autoplay: true } });
   goto(startBeat, { play: !isStatic, instant: isStatic });
 }
 if (params.get('dev')) { activeDev = params.get('dev'); layout(); }
