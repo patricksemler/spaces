@@ -12,6 +12,8 @@ let runToken = 0;
 let autoTimer = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const frozen = params.get('freeze') === '1';
+if (frozen) html.classList.add('frozen');
 
 // ---------- devices ----------
 // User taps: in Guided mode a tap on a live control switches to Free Play.
@@ -41,7 +43,11 @@ function renderAll(s) {
   devices.tv.update(s);
   renderBar(s);
 }
-store.subscribe(renderAll);
+// While a beat change replays the script, devices skip the intermediate
+// states and render once from the final one.
+let batching = false;
+let booted = false;
+store.subscribe((s) => { if (!batching) renderAll(s); });
 
 // ---------- stage scaling ----------
 const stage = $('#stage');
@@ -140,15 +146,23 @@ function goto(n, { play = true, instant = false } = {}) {
   n = Math.max(0, Math.min(BEATS.length - 1, n));
   runToken += 1;
   clearTimeout(autoTimer);
+  clearTimers();
   const token = runToken;
-  html.classList.add('no-anim');
   const ui = store.getState().ui;
+  // Stepping forward to the next beat glides: whatever the current beat had
+  // left to do animates into place. Any other jump is an instant cut.
+  const glide = booted && !instant && ui.mode === 'guided' && n === ui.beat + 1;
+  if (!glide) html.classList.add('no-anim');
+  batching = true;
   store.replace({ ...initialState(), ui: { ...ui, mode: 'guided', beat: n } });
   for (let i = 0; i < n; i += 1) runInstant(BEATS[i]);
   if (instant) runInstant(BEATS[n]);
-  store.dispatch({ type: 'SET_UI', patch: { beat: n, mode: 'guided' } });
-  void stage.offsetWidth;
-  if (params.get('freeze') !== '1') requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove('no-anim')));
+  batching = false;
+  renderAll(store.getState());
+  if (!glide) {
+    void stage.offsetWidth;
+    if (!frozen) requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove('no-anim')));
+  }
   setCaption(n);
   if (play && !instant) {
     started = true;
@@ -321,4 +335,5 @@ if (params.get('mode') === 'free') {
   goto(startBeat, { play: !isStatic, instant: isStatic });
 }
 if (params.get('dev')) { activeDev = params.get('dev'); layout(); }
+booted = true;
 html.classList.add('ready');

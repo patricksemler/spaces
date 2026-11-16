@@ -202,7 +202,8 @@ export function createIPhone(who, act) {
   const q = (s) => $(root, s);
   const thread = q('.thread');
   const inner = q('.thread-inner');
-  const msgEls = new Map();
+  let rendered = []; // signatures of the messages in the thread, in order
+  const sigOf = (m) => `${m.id}|${m.from}|${m.kind || m.text}`;
   const card = el(cardHTML(who));
   let lastSig = '';
   let islandTimer = null;
@@ -269,7 +270,6 @@ export function createIPhone(who, act) {
     node.dataset.from = m.from;
     if (animate) node.classList.add('enter');
     inner.append(node);
-    msgEls.set(m.id, node);
   }
 
   function scrollDown(smooth) {
@@ -285,6 +285,16 @@ export function createIPhone(who, act) {
     islandTimer = setTimeout(() => root.classList.remove('isl-open'), ms);
   }
 
+  // Toggle a state class on the phone. The matching fx- class gates that
+  // state's entry animation, so it plays for live changes only and never
+  // restarts after an instant cut between beats.
+  function flag(name, on) {
+    on = !!on;
+    if (root.classList.contains(name) === on) return;
+    root.classList.toggle(name, on);
+    root.classList.toggle(`fx-${name}`, on && !noAnim());
+  }
+
   function update(s) {
     const sp = s.space;
     const live = s.phase === 'live';
@@ -293,22 +303,26 @@ export function createIPhone(who, act) {
     setText(q('.lock-time'), fmtClock(s.clock));
 
     // messages
-    let added = false;
-    s.chat.messages.forEach((m) => { if (!msgEls.has(m.id)) { addMessage(m, !noAnim()); added = true; } });
-    if (msgEls.size > s.chat.messages.length) {
-      // reset happened
+    // Append when the thread on screen is a prefix of the new one (so bubbles
+    // that are mid-animation are left alone); otherwise rebuild it silently.
+    const sigs = s.chat.messages.map(sigOf);
+    const grows = rendered.length <= sigs.length && rendered.every((x, i) => x === sigs[i]);
+    if (!grows) {
       inner.querySelectorAll('.msg, .msg-sys').forEach((n) => n.remove());
-      msgEls.clear();
-      s.chat.messages.forEach((m) => addMessage(m, false));
-      added = true;
+      rendered = [];
+      card.classList.remove('fx-state');
+      $(card, '.sc-paid').classList.remove('fx');
     }
+    const added = sigs.length > rendered.length;
+    s.chat.messages.slice(rendered.length).forEach((m) => addMessage(m, grows && !noAnim()));
+    rendered = sigs;
 
     // overlays (Maya)
     const isMaya = who === 'Maya';
-    cls(root, 'plus-open', isMaya && s.maya.plusMenu);
-    cls(root, 'create-open', isMaya && s.maya.sheet);
-    cls(root, 'expense-open', isMaya && s.maya.expenseSheet);
-    cls(root, 'summary-open', isMaya && s.maya.summary);
+    flag('plus-open', isMaya && s.maya.plusMenu);
+    flag('create-open', isMaya && s.maya.sheet);
+    flag('expense-open', isMaya && s.maya.expenseSheet);
+    flag('summary-open', isMaya && s.maya.summary);
     const d = s.maya.draft;
     syncInput(q('.in-name'), d.name);
     syncInput(q('.in-place'), d.place);
@@ -320,10 +334,10 @@ export function createIPhone(who, act) {
 
     // Jordan overlays
     const isJ = who === 'Jordan';
-    cls(root, 'locked', isJ && s.jordan.screen === 'lock');
-    cls(root, 'alert-open', isJ && s.jordan.locPrompt);
-    cls(root, 'pay-open', isJ && s.jordan.paySheet);
-    cls(root, 'pay-success', isJ && s.jordan.payStage === 'done');
+    flag('locked', isJ && s.jordan.screen === 'lock');
+    flag('alert-open', isJ && s.jordan.locPrompt);
+    flag('pay-open', isJ && s.jordan.paySheet);
+    flag('pay-success', isJ && s.jordan.payStage === 'done');
 
     // island
     cls(root, 'isl-live', live);
@@ -364,7 +378,7 @@ export function createIPhone(who, act) {
     if (!live) { root.classList.remove('isl-open'); clearTimeout(islandTimer); }
     prevPhase = s.phase;
 
-    if (added) scrollDown(true);
+    if (added) scrollDown(grows);
   }
 
   function updateCard(s, sp) {
@@ -372,6 +386,7 @@ export function createIPhone(who, act) {
     const state = sp.ended ? 'ended' : s.phase === 'live' ? 'live' : sp.lockedTime ? 'locked' : 'voting';
     if (card.dataset.state !== state) {
       card.dataset.state = state;
+      cls(card, 'fx-state', !noAnim());
       scrollDown(true);
     }
     setText($(card, '.sc-status'), { voting: 'Voting', locked: 'Confirmed', live: 'Live', ended: 'Ended' }[state]);
@@ -426,7 +441,12 @@ export function createIPhone(who, act) {
     const owes = !isMaya && tot > 0 && me.joined && !me.paid;
     $(card, '.sc-pay').hidden = !(live && owes);
     setText($(card, '.sc-pay'), `Pay Maya ${money(pp)}`);
-    $(card, '.sc-paid').hidden = !(tot > 0 && !isMaya && me.paid);
+    const paidEl = $(card, '.sc-paid');
+    const showPaid = tot > 0 && !isMaya && me.paid;
+    if (paidEl.hidden === showPaid) {
+      paidEl.hidden = !showPaid;
+      cls(paidEl, 'fx', showPaid && !noAnim());
+    }
     $(card, '.sc-end').hidden = !(live && isMaya);
     const foot = !sp.ended ? 'Ends at 11 PM' : sp.kept ? 'Kept in chat' : sp.kept === false ? 'Removed from chat' : 'Ended';
     setText($(card, '.sc-foot-t'), foot);

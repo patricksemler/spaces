@@ -70,7 +70,8 @@
 .tvb-p.gone { opacity: .35; }
 .tvb-cost-ic .ic { width: 30px; height: 30px; color: #4cd964; }
 .tvb-cost-big { font: 800 64px/1 var(--font-display); letter-spacing: -1.5px; margin-top: 18px; font-variant-numeric: tabular-nums; opacity: .35; transition: opacity .4s; }
-.tvb-cost.has .tvb-cost-big { opacity: 1; animation: pop .7s var(--spring); }
+.tvb-cost.has .tvb-cost-big { opacity: 1; }
+.tvb-cost.has.fx .tvb-cost-big { animation: pop .7s var(--spring); }
 .tvb-cost:not(.has) .tvb-cost-big, .tvb-cost:not(.has) .tvb-cost-bar { display: none; }
 .tvb-cost:not(.has) .tvb-cost-sub { margin-top: 18px; }
 .tvb-cost-sub { font-size: 19px; color: rgba(255, 255, 255, .7); margin-top: 10px; }

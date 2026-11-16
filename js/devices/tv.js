@@ -1,5 +1,5 @@
 import { I } from '../icons.js';
-import { el, $, $$, setText, cls, avatar } from '../ui.js';
+import { el, $, $$, setText, cls, avatar, noAnim } from '../ui.js';
 import { PEOPLE, joined, hereList, total, perPerson, paidCount, money, fmtClock, timeLeft } from '../store.js';
 
 const APPS = [
@@ -89,7 +89,11 @@ export function createTV() {
     });
     const tot = total(sp);
     const pc = paidCount(sp);
-    cls(q('.tvb-cost'), 'has', tot > 0);
+    const cost = q('.tvb-cost');
+    if (cost.classList.contains('has') !== tot > 0) {
+      cls(cost, 'has', tot > 0);
+      cls(cost, 'fx', tot > 0 && !noAnim()); // pop only when the cost arrives live
+    }
     setText(q('.tvb-cost-big'), tot ? `${money(perPerson(sp))} each` : '—');
     setText(q('.tvb-cost-sub'), tot ? `${sp.expenses[0].label} · ${money(tot)}` : 'No expenses yet');
     setText(q('.tvb-cost-paid'), tot ? `${pc} of ${jn} paid` : ' ');

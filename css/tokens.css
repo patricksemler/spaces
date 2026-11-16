@@ -69,8 +69,11 @@ input { font: inherit; }
   transition: opacity var(--d) var(--ease-out), filter var(--d) var(--ease-out), transform var(--d) var(--spring);
 }
 
-/* replay without animation */
-.no-anim *, .no-anim *::before, .no-anim *::after { transition: none !important; animation: none !important; }
+/* Cut to a new state without animating. Only transitions are disabled:
+   entry animations are gated by fx classes that JS adds only for live
+   changes, so nothing restarts when this class comes off again. */
+.no-anim *, .no-anim *::before, .no-anim *::after { transition: none !important; }
+.frozen *, .frozen *::before, .frozen *::after { animation: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   :root { --spring: ease; --spring-soft: ease; }
