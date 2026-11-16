@@ -94,7 +94,7 @@ html:not(.ready) #stage { opacity: 0; }
 .card-actions .card-primary:hover { background: #fff; }
 #intro h2 { margin-top: 20px; font-size: 56px; letter-spacing: -1.5px; }
 
-/* ---- control bar: transport · steps · mode ---- */
+/* ---- control bar: transport · steps · restart ---- */
 #stepbar {
   position: fixed; left: 0; right: 0; bottom: 0; height: 60px; z-index: 50;
   display: grid; grid-template-columns: 1fr minmax(0, 660px) 1fr; align-items: center; gap: 28px;
@@ -102,12 +102,8 @@ html:not(.ready) #stage { opacity: 0; }
   background: var(--stage-bg); border-top: 1px solid var(--stage-line);
   transition: opacity .3s ease, transform .35s var(--ease-out);
 }
-.sb-transport, .sb-side, .sb-free { display: flex; align-items: center; gap: 4px; }
+.sb-transport, .sb-side { display: flex; align-items: center; gap: 4px; }
 .sb-side { justify-self: end; gap: 10px; }
-.sb-free { display: none; justify-self: center; gap: 8px; }
-.mode-free .sb-transport { visibility: hidden; }
-.mode-free .sb-dots { display: none; }
-.mode-free .sb-free { display: flex; }
 
 .sbtn {
   width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center;
@@ -145,17 +141,8 @@ html:not(.ready) #stage { opacity: 0; }
   transition: background .15s;
 }
 .sbtn-text:hover { background: rgba(255, 255, 255, .13); }
-.sbtn-text:disabled { opacity: .35; cursor: default; }
-.sbtn-text:disabled:hover { background: rgba(255, 255, 255, .07); }
 .sbtn-text .ic { width: 14px; height: 14px; }
 
-.sb-mode { display: flex; background: rgba(255, 255, 255, .06); border-radius: 8px; padding: 2px; }
-.sb-mode button {
-  height: 28px; padding: 0 12px; border-radius: 6px; font-size: 13px; font-weight: 500;
-  color: var(--stage-ink2); transition: background .2s, color .2s; white-space: nowrap;
-}
-.sb-mode button:hover { color: var(--stage-ink); }
-.sb-mode button.on { background: rgba(255, 255, 255, .14); color: var(--stage-ink); }
 .sb-keys .ic { width: 18px; height: 18px; }
 .show-keys .sb-keys { background: rgba(255, 255, 255, .1); color: var(--stage-ink); }
 
@@ -177,15 +164,6 @@ kbd {
   background: rgba(255, 255, 255, .08); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
   color: var(--stage-ink2); font: 500 12px/1 var(--font);
 }
-
-#toast {
-  position: fixed; left: 50%; top: 16px; transform: translate(-50%, -80px); z-index: 70;
-  background: #1a1a1d; border: 1px solid var(--stage-line); color: var(--stage-ink);
-  padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 500;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, .5);
-  transition: transform .45s var(--spring-soft); max-width: calc(100vw - 32px); text-align: center;
-}
-#toast.show { transform: translate(-50%, 0); }
 
 /* clean recording mode */
 .clean #stepbar { opacity: 0; pointer-events: none; transform: translateY(100%); }
@@ -225,8 +203,10 @@ kbd {
 .narrow .card-actions { margin-top: 26px; }
 .narrow #stepbar { display: flex; justify-content: space-between; gap: 8px; height: 56px; padding: 0 12px; }
 .narrow .sb-dots, .narrow .sb-keys { display: none; }
-.narrow.mode-free .sb-transport { display: none; }
 .narrow .sbtn { width: 36px; height: 36px; }
 .narrow .sbtn-text { height: 36px; }
 .narrow .sbtn-text span { display: none; }
-.narrow .sb-mode button { height: 32px; padding: 0 10px; }
+
+/* guided only: the devices are a display, not controls */
+.slot [data-act], .slot input { cursor: default; }
+.slot input { pointer-events: none; }

@@ -35,7 +35,7 @@ export function initialState() {
     space: null,
     jordan: { screen: 'messages', locPrompt: false, paySheet: false, payStage: 'idle' },
     tv: { screen: 'home' },
-    ui: { mode: 'guided', beat: 0, captions: true, autoplay: false },
+    ui: { beat: 0, captions: true, autoplay: false },
   };
 }
 

@@ -11,8 +11,8 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 ## How to use it
 - **Guided** (default): press **→** or **Next** to step through 6 beats. Each beat plays its taps for you, and a soft finger ripple shows where the tap lands.
 - **Intro**: a fresh open holds on a title card until you press **Play demo** (or **Space** / **→**). Links with `?beat=` skip it.
-- **Outro**: after the last beat, a closing card fades in with **Replay** and **Try it yourself**. **Esc** dismisses it.
-- **Free Play**: press **F**, or tap any control on a device. Every control works. Sam, Priya, and Alex respond on their own, and **Skip to 8 PM** starts the hangout.
+- **Outro**: after the last beat, a closing card fades in with **Replay** and **Close**. **Esc** dismisses it.
+- **Restart** (or **R**) goes back to the intro card. The devices are driven by the beats only; tapping them does nothing.
 - **On a phone**: you see one device at a time. Use the Maya / Jordan / TV switcher. It also follows whichever device is being tapped.
 
 | Key | Action |
@@ -20,11 +20,10 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 | ← / → | Previous / next beat |
 | Space | Pause or resume autoplay (on by default once the demo is started; add `?autoplay=0` to step through by hand) |
 | 1–6 | Jump to a beat |
-| F | Switch between Guided and Free Play |
 | H | Hide controls and captions (for clean screen recording) |
-| R | Reset |
+| R | Restart from the intro card |
 
-URL parameters: `?beat=3` opens a beat and plays it, `&static=1` jumps straight to the beat's end state, `&clean=1` hides the controls, and `&mode=free` opens in Free Play.
+URL parameters: `?beat=3` opens a beat and plays it, `&static=1` jumps straight to the beat's end state, `&clean=1` hides the controls, and `&autoplay=0` starts paused.
 
 ## Beats
 | # | Beat | PRD requirements |
@@ -41,7 +40,7 @@ Plain HTML, CSS, and JS using native ES modules. There's no build step and no ru
 
 - `js/store.js`: the pure reducer, the selectors (vote counts, per-person split, paid count), and the store
 - `js/devices/*.js`: each device builds its DOM once, and `update(state)` only changes classes and text, so CSS springs animate on every device together
-- `js/beats.js`: the guided scripts. `js/director.js`: the step bar, keyboard shortcuts, autoplay, Free Play, and the mobile switcher
+- `js/beats.js`: the guided scripts. `js/director.js`: the step bar, keyboard shortcuts, autoplay, intro/outro cards, and the mobile switcher
 - Motion uses CSS `linear()` spring curves on transform and opacity. `prefers-reduced-motion` is respected.
 
 Run it locally with `python3 -m http.server`, then open http://localhost:8000.
