@@ -127,7 +127,10 @@ export function reducer(prev, a) {
       s.clock = Math.max(s.clock, H(20));
       s.tv.screen = 'board';
       s.jordan.screen = 'lock';
+      // Maya is the host and already at the apartment, so she is here the moment
+      // the Space goes live (no "On the way" flash before her arrival).
       sp.members.Maya.location = 'on';
+      sp.members.Maya.here = true;
       return s;
     case 'JORDAN_SCREEN':
       s.jordan.screen = a.screen;

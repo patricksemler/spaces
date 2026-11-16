@@ -59,8 +59,7 @@ export const BEATS = [
     script: [
       { d: 400, a: { type: 'SET_CLOCK', clock: H(19, 59) } },
       { d: 900, a: { type: 'GO_LIVE' }, focus: T },
-      { d: 500, a: { type: 'ARRIVE', person: 'Maya', location: true } },
-      { d: 1300, a: { type: 'ARRIVE', person: 'Sam', location: true } },
+      { d: 1800, a: { type: 'ARRIVE', person: 'Sam', location: true } },
       { d: 1000, a: { type: 'ARRIVE', person: 'Priya', location: true }, focus: M },
       { d: 1500, tap: [J, '.lock-la'], a: { type: 'JORDAN_SCREEN', screen: 'messages' } },
       { d: 1400, tap: [J, '.alert-b-strong'], a: { type: 'LOC_DECLINE', person: 'Jordan' } },
