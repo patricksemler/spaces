@@ -35,8 +35,6 @@ export const I = {
   run: svg('0 0 24 24', '<circle cx="14" cy="4" r="2.2"/><path d="m9 22 2.5-7 2.5 2.5V22h2v-6l-2.6-2.6.9-3.4A6.7 6.7 0 0 0 19 12v-2a4.7 4.7 0 0 1-3.6-1.8l-1-1.6a2 2 0 0 0-2.4-.8L6.5 8v5h2V9.3l2-.8L7 22h2Z"/>'),
   game: svg('0 0 24 24', '<path d="M7 7h10a5 5 0 0 1 4.9 6l-.6 3a2.6 2.6 0 0 1-4.5 1.2L15 15.4H9l-1.8 1.8A2.6 2.6 0 0 1 2.7 16l-.6-3A5 5 0 0 1 7 7Zm0 3v1.5H5.5v1.5H7v1.5h1.5V13H10v-1.5H8.5V10H7Zm9.5 0.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/>'),
   lock: svg('0 0 20 24', '<rect x="2" y="10" width="16" height="13" rx="3"/><path d="M5.5 10V7a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/>'),
-  globe: svg('0 0 24 24', '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 12h19M12 2.5c2.8 2.6 4 6 4 9.5s-1.2 6.9-4 9.5c-2.8-2.6-4-6-4-9.5s1.2-6.9 4-9.5Z" fill="none" stroke="currentColor" stroke-width="1.6"/>'),
-  dots: svg('0 0 24 24', '<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>'),
   xmark: svg('0 0 20 20', '<path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'),
   sparkle: svg('0 0 24 24', '<path d="M12 2c.6 4.6 2.4 7.4 8 8.5v1C14.4 12.6 12.6 15.4 12 20h-.1c-.6-4.6-2.4-7.4-8-8.5v-1C9.5 9.4 11.3 6.6 11.9 2h.1Z"/>'),
 };

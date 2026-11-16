@@ -9,7 +9,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 ![Beat 3: the Space goes live](screenshots/beat-3-live.png)
 
 ## How to use it
-- **Guided** (default): press **→** or **Next** to step through 7 beats. Each beat plays its taps for you, and a soft finger ripple shows where the tap lands.
+- **Guided** (default): press **→** or **Next** to step through 6 beats. Each beat plays its taps for you, and a soft finger ripple shows where the tap lands.
 - **Free Play**: press **F**, or tap any control on a device. Every control works. Sam, Priya, and Alex respond on their own, and **Skip to 8 PM** starts the hangout.
 - **On a phone**: you see one device at a time. Use the Maya / Jordan / TV switcher. It also follows whichever device is being tapped.
 
@@ -17,7 +17,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 |---|---|
 | ← / → | Previous / next beat |
 | Space | Autoplay (plays each beat, holds about 3 s, moves on) |
-| 1–7 | Jump to a beat |
+| 1–6 | Jump to a beat |
 | F | Switch between Guided and Free Play |
 | H | Hide controls and captions (for clean screen recording) |
 | R | Reset |
@@ -33,7 +33,6 @@ URL parameters: `?beat=3` opens a beat and plays it, `&static=1` jumps straight 
 | 3 | 8 PM: Dynamic Island, Lock Screen Live Activity, and the TV board wake up together. Jordan declines location, which is off by default | FR-04, FR-06, FR-09, FR-10 |
 | 4 | Pizza $40 → $8 each on every screen. Jordan pays back with an Apple Pay–style sheet | FR-05 |
 | 5 | Maya ends the Space. Sharing stops, the TV goes back to Home, and a "Keep plan?" summary appears | FR-07 |
-| 6 | Rewind: Alex is on Android and uses the web link | FR-08 |
 
 ## Tech
 Plain HTML, CSS, and JS using native ES modules. There's no build step and no runtime dependencies, and the repo root is what gets deployed (GitHub Pages).

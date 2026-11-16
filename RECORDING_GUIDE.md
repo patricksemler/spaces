@@ -10,7 +10,7 @@ Use the Devpost video outline from SUBMISSION.md. The prototype covers the demo 
 5. Record your voiceover live or add it afterward. Each beat runs its taps on its own, so all you do is press **→**.
 
 > Prefer the captions on screen? Skip step 2. They match the voiceover lines below.
-> For hands-free recording, press **Space** (autoplay). It plays each beat, holds about 3 s, and moves on. All 7 beats take about 85 s.
+> For hands-free recording, press **Space** (autoplay). It plays each beat, holds about 3 s, and moves on. All 6 beats take about 75 s.
 
 ## Script
 | Time | Press | On screen | Say (roughly) |
@@ -23,7 +23,6 @@ Use the Devpost video outline from SUBMISSION.md. The prototype covers the demo 
 | 1:10–1:30 | **→** | 8 PM: Dynamic Island, Jordan's Lock Screen, and the TV board come on together. People arrive. Jordan taps Don't Allow on location. | "At 8 the Space goes live on every device: Dynamic Island, Lock Screen, and the shared Apple TV. Location stays off unless you say yes, and Jordan says no." |
 | 1:30–1:45 | **→** | Pizza $40 → $8 each everywhere. Jordan pays with a double-click. | "Maya adds pizza once. Everyone sees $8 each, and Jordan pays her back in two taps." |
 | 1:45–1:55 | **→** | End Space: the island and TV board dissolve, and the summary appears. Maya taps Keep Plan. | "When it's over, Maya ends it. Sharing turns off for everyone, the TV goes back to Home, and she picks what to keep." |
-| 1:55–2:05 | **→** | Android phone slides in with the web link. Alex votes, then pays. | "Not everyone has an iPhone. Alex uses the web link to vote and pay, so nobody gets left out." |
 | 2:05–2:20 | (slide) | n/a | **Isn't this just Apple Invites?** Invites is a page you send once. Spaces is live: it changes how everyone's devices behave during the hangout, then cleans up after itself. |
 | 2:20–2:35 | (slide) | n/a | **Business + metrics.** Ecosystem retention plus accessory pull-through (Apple TV in the apartment). North star: groups that start another Space within 30 days. Guardrails: location turned off, Spaces ended early. |
 

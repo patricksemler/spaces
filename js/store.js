@@ -35,7 +35,6 @@ export function initialState() {
     space: null,
     jordan: { screen: 'messages', locPrompt: false, paySheet: false, payStage: 'idle' },
     tv: { screen: 'home' },
-    android: { visible: false },
     ui: { mode: 'guided', beat: 0, captions: true, autoplay: false },
   };
 }
@@ -83,14 +82,6 @@ export function reducer(prev, a) {
       s.chat.seq += 1;
       s.chat.messages.push({ id: 'x' + s.chat.seq, from: a.from, text: a.text });
       return s;
-    case 'REWIND_LATER': {
-      // Android cutaway: skip ahead to later that night in one step.
-      let n = reducer(prev, { type: 'LOCK_TIME', time: '8 PM' });
-      n = reducer(n, { type: 'GO_LIVE' });
-      ['Maya', 'Sam', 'Priya', 'Jordan', 'Alex'].forEach((p) => { n = reducer(n, { type: 'ARRIVE', person: p }); });
-      n = reducer(n, { type: 'ADD_EXPENSE', label: 'Pizza', amount: 40, clock: H(20, 47) });
-      return n;
-    }
     case 'OPEN_PLUS': s.maya.plusMenu = a.open !== false; return s;
     case 'OPEN_CREATE':
       s.maya.plusMenu = false;
@@ -198,7 +189,6 @@ export function reducer(prev, a) {
       s.maya.summary = false;
       if (sp) sp.kept = a.keep !== false;
       return s;
-    case 'SHOW_ANDROID': s.android.visible = a.visible !== false; return s;
     default:
       return s;
   }

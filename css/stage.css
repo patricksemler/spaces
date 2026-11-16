@@ -63,27 +63,6 @@ html:not(.ready) #stage { opacity: 0; }
 .cap-s { font-size: 16.5px; line-height: 1.4; color: var(--stage-ink2); text-wrap: pretty; }
 .legal { position: absolute; bottom: 22px; left: 0; right: 0; text-align: center; font-size: 13px; color: rgba(245, 245, 247, .38); }
 
-/* ---- android cutaway ---- */
-.android-layer { position: absolute; inset: 0; pointer-events: none; z-index: 20; }
-.an-dim {
-  position: absolute; inset: 0; background: rgba(5, 5, 10, .72);
-  backdrop-filter: blur(6px) saturate(.7); -webkit-backdrop-filter: blur(6px) saturate(.7);
-  opacity: 0; transition: opacity var(--d-slow) var(--ease-out);
-}
-.an-wrap {
-  position: absolute; left: 50%; top: 92px; width: 352px; margin-left: -176px;
-  transform: translateY(1100px) rotate(4deg); transition: transform .9s var(--spring-soft);
-  display: flex; flex-direction: column; align-items: center; gap: 18px;
-}
-.an-wrap .dev-scale { width: 392px; height: 820px; transform: scale(.9); margin-bottom: calc(820px * -.1); margin-right: calc(392px * -.1); }
-.an-tag { text-align: center; display: flex; flex-direction: column; gap: 4px; }
-.an-tag b { font: 700 24px/1.1 var(--font-display); text-wrap: balance; }
-.an-tag span { color: var(--stage-ink2); font-size: 15px; }
-.android-on .android-layer { pointer-events: auto; }
-.android-on .an-dim { opacity: 1; }
-.android-on .an-wrap { transform: none; }
-.android-on .captions { z-index: 21; }
-
 /* ---- tap ripple ---- */
 #taps { position: absolute; inset: 0; pointer-events: none; z-index: 40; }
 .tap {
@@ -192,8 +171,3 @@ kbd { display: inline-block; min-width: 22px; padding: 2px 6px; margin-right: 4p
 .narrow .sbtn { width: 36px; height: 36px; }
 .narrow .sb-mode button { padding: 0 9px; font-size: 12.5px; height: 30px; }
 .narrow .sbtn-text span { display: none; }
-.narrow .an-wrap { position: fixed; top: 64px; left: 50%; transform-origin: top center; }
-.narrow.android-on .an-wrap { transform: scale(var(--ans, 1)); }
-.narrow .an-tag b { font-size: 18px; }
-.narrow .an-dim { position: fixed; }
-.narrow .android-layer { position: fixed; }

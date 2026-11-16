@@ -1,12 +1,11 @@
 // Guided demo beats. Each beat's script runs from the end state of the
 // previous beat. Steps: { d: ms delay before, a: action, tap: [device, selector],
-// type: [device, selector, field, text] (typing macro), s: 'rewind' (Android store), focus }
+// type: [device, selector, field, text] (typing macro), focus }
 import { H } from './store.js';
 
 const M = 'maya';
 const J = 'jordan';
 const T = 'tv';
-const A = 'android';
 
 export const BEATS = [
   {
@@ -95,17 +94,6 @@ export const BEATS = [
       { d: 600, a: { type: 'SET_CLOCK', clock: H(22, 41) } },
       { d: 900, tap: [M, '.sc-end'], a: { type: 'END_SPACE' }, focus: T },
       { d: 2400, tap: [M, '.sheet-summary .btn-primary'], a: { type: 'KEEP_PLAN', keep: true }, focus: M },
-    ],
-  },
-  {
-    key: 'android',
-    title: 'Rewind: Alex is on Android',
-    line: 'The same Space works from a web link: pick times, see who’s going, and pay back. Nobody gets left out.',
-    script: [
-      { d: 200, a: { type: 'SHOW_ANDROID', visible: true }, focus: A },
-      { d: 1300, s: 'rewind', tap: [A, '.wv-time[data-arg="9 PM"]'], a: { type: 'VOTE', person: 'Alex', time: '9 PM', on: true } },
-      { d: 1500, s: 'rewind', a: { type: 'REWIND_LATER' } },
-      { d: 1600, s: 'rewind', tap: [A, '.wv-pay'], a: { type: 'PAY', person: 'Alex' } },
     ],
   },
 ];

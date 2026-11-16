@@ -1,16 +1,13 @@
-import { createStore, initialState, H } from './store.js';
+import { createStore, initialState } from './store.js';
 import { BEATS } from './beats.js';
 import { createIPhone } from './devices/iphone.js';
 import { createTV } from './devices/tv.js';
-import { createAndroid } from './devices/android.js';
 import { I } from './icons.js';
 import { $, $$, cls } from './ui.js';
 
 const html = document.documentElement;
 const params = new URLSearchParams(location.search);
 const store = createStore(initialState());
-let rewind = null; // separate store for the Android "rewind" cutaway
-let androidBound = 'main';
 let runToken = 0;
 let autoTimer = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -28,32 +25,20 @@ function userAct(action, silent) {
 }
 userAct.state = () => store.getState();
 
-function androidAct(action) {
-  if (store.getState().ui.mode === 'guided' && rewind && androidBound === 'rewind') {
-    rewind.dispatch(action);
-    return;
-  }
-  userAct(action);
-}
-
 const devices = {
   maya: createIPhone('Maya', userAct),
   jordan: createIPhone('Jordan', userAct),
   tv: createTV(),
-  android: createAndroid(androidAct),
 };
 
 $('#stage .slot-maya .dev-scale').append(devices.maya.root);
 $('#stage .slot-jordan .dev-scale').append(devices.jordan.root);
 $('#stage .slot-tv .dev-scale').append(devices.tv.root);
-$('#stage .an-wrap .dev-scale').append(devices.android.root);
 
 function renderAll(s) {
   devices.maya.update(s);
   devices.jordan.update(s);
   devices.tv.update(s);
-  if (androidBound === 'main') devices.android.update(s);
-  cls(html, 'android-on', s.android.visible);
   renderBar(s);
 }
 store.subscribe(renderAll);
@@ -62,7 +47,7 @@ store.subscribe(renderAll);
 const stage = $('#stage');
 const NARROW = 900;
 let activeDev = 'maya';
-const SIZES = { maya: [417, 876], jordan: [417, 876], tv: [1304, 850], android: [392, 820] };
+const SIZES = { maya: [417, 876], jordan: [417, 876], tv: [1304, 850] };
 
 function layout() {
   const vw = innerWidth;
@@ -82,7 +67,6 @@ function layout() {
   const [w, h] = SIZES[activeDev];
   const s = Math.min((vw - 32) / w, (vh - top - bottom - 40) / h);
   html.style.setProperty('--ns', s);
-  html.style.setProperty('--ans', Math.min(1, (vh - 210) / 840, (vw - 24) / 392));
   $$(stage, '.slot').forEach((n) => cls(n, 'active', n.dataset.dev === activeDev));
   $$(document, '.switcher button').forEach((b) => cls(b, 'on', b.dataset.dev === activeDev));
   const th = devices[activeDev] && devices[activeDev].root.querySelector('.thread');
@@ -91,7 +75,7 @@ function layout() {
 addEventListener('resize', layout);
 
 function focusDev(dev) {
-  if (!dev || dev === 'android') return;
+  if (!dev) return;
   if (activeDev === dev) return;
   activeDev = dev;
   layout();
@@ -118,15 +102,12 @@ function showTap(dev, sel) {
 }
 
 // ---------- running beats ----------
-function storeFor(step) { return step.s === 'rewind' ? rewind : store; }
-
 function runInstant(beat) {
   for (const step of beat.script) {
-    const st = storeFor(step);
     if (step.type) {
       const [, , field, text, kind] = step.type;
-      st.dispatch({ type: kind || 'EDIT_DRAFT', field, value: text });
-    } else st.dispatch(step.a);
+      store.dispatch({ type: kind || 'EDIT_DRAFT', field, value: text });
+    } else store.dispatch(step.a);
   }
 }
 
@@ -135,12 +116,11 @@ async function playScript(beat, token) {
     await sleep(step.d || 0);
     if (token !== runToken) return false;
     if (step.focus) focusDev(step.focus);
-    const st = storeFor(step);
     if (step.type) {
       const [dev, sel, field, text, kind] = step.type;
       showTap(dev, sel);
       for (let i = 1; i <= text.length; i += 1) {
-        st.dispatch({ type: kind || 'EDIT_DRAFT', field, value: text.slice(0, i) });
+        store.dispatch({ type: kind || 'EDIT_DRAFT', field, value: text.slice(0, i) });
         await sleep(reduced ? 0 : 45);
         if (token !== runToken) return false;
       }
@@ -151,29 +131,9 @@ async function playScript(beat, token) {
       await sleep(180);
       if (token !== runToken) return false;
     }
-    st.dispatch(step.a);
+    store.dispatch(step.a);
   }
   return true;
-}
-
-function makeRewind() {
-  // Alex's view, back during voting: everyone but Alex has voted.
-  rewind = createStore(initialState());
-  runInstantOn(rewind, BEATS[0]);
-  runInstantOn(rewind, BEATS[1]);
-  const pre = BEATS[2].script.filter((s) => !(s.a && s.a.person === 'Alex') && !(s.a && s.a.type === 'LOCK_TIME'));
-  runInstantOn(rewind, { script: pre });
-  rewind.dispatch({ type: 'SET_CLOCK', clock: H(17, 31) });
-  rewind.subscribe((s) => { if (androidBound === 'rewind') devices.android.update(s); });
-}
-function runInstantOn(st, beat) {
-  for (const step of beat.script) {
-    if (step.s === 'rewind') continue;
-    if (step.type) {
-      const [, , field, text, kind] = step.type;
-      st.dispatch({ type: kind || 'EDIT_DRAFT', field, value: text });
-    } else st.dispatch(step.a);
-  }
 }
 
 function goto(n, { play = true, instant = false } = {}) {
@@ -184,14 +144,7 @@ function goto(n, { play = true, instant = false } = {}) {
   html.classList.add('no-anim');
   const ui = store.getState().ui;
   store.replace({ ...initialState(), ui: { ...ui, mode: 'guided', beat: n } });
-  androidBound = 'main';
-  rewind = null;
   for (let i = 0; i < n; i += 1) runInstant(BEATS[i]);
-  if (BEATS[n].key === 'android') {
-    makeRewind();
-    androidBound = 'rewind';
-    devices.android.update(rewind.getState());
-  }
   if (instant) runInstant(BEATS[n]);
   store.dispatch({ type: 'SET_UI', patch: { beat: n, mode: 'guided' } });
   void stage.offsetWidth;
@@ -227,13 +180,12 @@ const bar = $('#stepbar');
 bar.innerHTML = `
   <div class="sb-guided">
     <button class="sbtn sb-back" aria-label="Previous beat">${I.chevronLeft}</button>
-    <div class="sb-dots">${BEATS.map((b, i) => `<button class="sb-dot" data-i="${i}" title="${i + 1}. ${b.title}"><i></i><span>${['Today', 'Create', 'Invite', 'Live', 'Split', 'End', 'Android'][i]}</span></button>`).join('')}</div>
+    <div class="sb-dots">${BEATS.map((b, i) => `<button class="sb-dot" data-i="${i}" title="${i + 1}. ${b.title}"><i></i><span>${['Today', 'Create', 'Invite', 'Live', 'Split', 'End'][i]}</span></button>`).join('')}</div>
     <button class="sbtn sb-next" aria-label="Next beat">${I.chevronRight}</button>
     <button class="sbtn sb-auto" aria-label="Autoplay"><span class="ic-play">${I.play}</span><span class="ic-pause">${I.pause}</span></button>
   </div>
   <div class="sb-free">
     <button class="sbtn-text sb-golive">${I.clock}<span>Skip to 8 PM</span></button>
-    <button class="sbtn-text sb-android">${I.globe}<span>Alex’s Android</span></button>
     <button class="sbtn-text sb-reset">${I.reset}<span>Reset</span></button>
   </div>
   <div class="sb-mode" role="tablist">
@@ -248,9 +200,7 @@ $$(bar, '.sb-dot').forEach((d) => (d.onclick = () => goto(+d.dataset.i)));
 $$(bar, '.sb-mode button').forEach((b) => (b.onclick = () => setMode(b.dataset.mode)));
 $('.sb-reset').onclick = () => resetFree();
 $('.sb-golive').onclick = () => { const s = store.getState(); if (s.space) { freeSim({ type: 'GO_LIVE' }); store.dispatch({ type: 'GO_LIVE' }); } else toast('Create a Space on Maya’s phone first (tap +)'); };
-$('.sb-android').onclick = () => store.dispatch({ type: 'SHOW_ANDROID', visible: !store.getState().android.visible });
 $('.sb-keys').onclick = () => html.classList.toggle('show-keys');
-$('.an-dim').onclick = () => { if (store.getState().ui.mode === 'free') store.dispatch({ type: 'SHOW_ANDROID', visible: false }); };
 
 function next() {
   const { beat } = store.getState().ui;
@@ -264,7 +214,6 @@ function renderBar(s) {
   $$(bar, '.sb-dot').forEach((d, i) => { cls(d, 'on', i === beat); cls(d, 'done', i < beat); });
   $$(bar, '.sb-mode button').forEach((b) => cls(b, 'on', b.dataset.mode === mode));
   cls(bar, 'playing', autoplay);
-  cls($('.sb-android'), 'on', s.android.visible);
   $('.sb-golive').disabled = s.phase !== 'chat';
 }
 
@@ -282,12 +231,9 @@ function setMode(mode, keepState) {
   runToken += 1;
   clearTimeout(autoTimer);
   if (mode === 'free') {
-    androidBound = 'main';
-    rewind = null;
     store.dispatch({ type: 'SET_UI', patch: { mode: 'free', autoplay: false } });
     if (!keepState) resetFree();
     else {
-      if (store.getState().android.visible) store.dispatch({ type: 'SHOW_ANDROID', visible: false });
       toast('Free Play: you’re driving. Tap anything on any device.');
     }
     $('.cap-k').textContent = 'Free Play';
@@ -303,7 +249,6 @@ function resetFree() {
   clearTimers();
   html.classList.add('no-anim');
   store.replace({ ...initialState(), ui: { ...store.getState().ui, mode: 'free', autoplay: false } });
-  androidBound = 'main';
   requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove('no-anim')));
 }
 
@@ -356,7 +301,7 @@ addEventListener('keydown', (e) => {
   else if (e.key === 'h' || e.key === 'H') { html.classList.toggle('clean'); layout(); }
   else if (e.key === 'r' || e.key === 'R') { if (mode === 'free') resetFree(); else goto(0, { play: false }); }
   else if (e.key === 'f' || e.key === 'F') setMode(mode === 'free' ? 'guided' : 'free');
-  else if (/^[1-7]$/.test(e.key)) goto(+e.key - 1);
+  else if (/^[1-9]$/.test(e.key) && +e.key <= BEATS.length) goto(+e.key - 1);
   else if (e.key === 'Escape') html.classList.remove('show-keys');
 });
 
