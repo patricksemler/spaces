@@ -130,7 +130,9 @@
 .sc-free::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 [data-state="live"] .sc-free, [data-state="ended"] .sc-free { display: none; }
 .sc-avs { display: flex; align-items: center; }
-.sc-av { margin-right: -5px; box-shadow: 0 0 0 1.5px #fff; }
+/* position+z-index puts every avatar on the same paint layer, so one that is
+   mid-transform (popping in) stays in DOM order instead of jumping on top. */
+.sc-av { position: relative; z-index: 0; margin-right: -5px; box-shadow: 0 0 0 1.5px #fff; }
 .sc-av.gone { opacity: 0; transform: scale(.4); width: 0; margin-right: 0; }
 .sc-avs .av { transition: opacity .4s, transform .5s var(--spring), width .4s var(--ease-out), margin .4s; }
 .sc-joined { margin-left: 12px; font-size: 13px; color: var(--label2); }
