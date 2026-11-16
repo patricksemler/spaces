@@ -512,6 +512,9 @@ function toast(msg) {
 }
 
 // ---------- keys ----------
+// Track the last input method so the focus ring only shows for keyboard navigation.
+addEventListener('pointerdown', () => html.classList.add('using-pointer'), true);
+addEventListener('keydown', (e) => { if (e.key === 'Tab') html.classList.remove('using-pointer'); }, true);
 addEventListener('keydown', (e) => {
   if ((e.target.matches && e.target.matches('input, textarea')) || e.metaKey || e.ctrlKey || e.altKey) return;
   const { beat, mode } = store.getState().ui;

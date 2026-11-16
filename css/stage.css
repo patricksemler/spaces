@@ -15,6 +15,9 @@
 html:not(.ready) #stage { opacity: 0; }
 
 :where(button, [tabindex]):focus-visible { outline: 2px solid rgba(255, 255, 255, .85); outline-offset: 2px; }
+/* Browsers show the ring when a key is pressed after a mouse click on a button.
+   Only keep it for real keyboard navigation (Tab), not after pointer use. */
+html.using-pointer :where(button, [tabindex]):focus-visible { outline: none; }
 
 /* ---- top bar ---- */
 .topbar {
