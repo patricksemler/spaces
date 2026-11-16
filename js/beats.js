@@ -30,7 +30,7 @@ export const BEATS = [
       { d: 350, tap: [M, '.chip[data-arg="7 PM"]'], a: { type: 'TOGGLE_DRAFT_TIME', time: '7 PM' } },
       { d: 300, tap: [M, '.chip[data-arg="8 PM"]'], a: { type: 'TOGGLE_DRAFT_TIME', time: '8 PM' } },
       { d: 300, tap: [M, '.chip[data-arg="9 PM"]'], a: { type: 'TOGGLE_DRAFT_TIME', time: '9 PM' } },
-      { d: 450, tap: [M, '.field-toggle'], a: { type: 'EDIT_DRAFT', field: 'costSplit', value: true } },
+      { d: 450, tap: [M, '.field-toggle .switch'], a: { type: 'EDIT_DRAFT', field: 'costSplit', value: true } },
       { d: 650, tap: [M, '.sh-send'], a: { type: 'SEND_SPACE' } },
       { d: 900, a: { type: 'NOOP' }, focus: J },
     ],
