@@ -119,7 +119,7 @@ export function createIPhone(who, act) {
             <label class="field"><span class="field-l">Place</span><input class="in-place" placeholder="Add a place" data-field="place" autocomplete="off"></label>
           </div>
           <div class="field-cap">Times</div>
-          <div class="chips">${TIMES.map((t) => `<button class="chip" data-act="draftTime" data-arg="${t}">${I.check}<span>${t}</span></button>`).join('')}</div>
+          <div class="chips">${TIMES.map((t) => `<button class="chip" data-act="draftTime" data-arg="${t}"><span>${t}</span></button>`).join('')}</div>
           <div class="field-note">The group votes on these.</div>
           <div class="field-group">
             <div class="field field-toggle" data-act="toggleSplit"><span class="field-l">${I.cash}Split Costs</span><span class="switch"><i></i></span></div>

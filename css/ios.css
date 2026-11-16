@@ -244,9 +244,7 @@
 .field-note { font-size: 13px; color: var(--label2); margin: -8px 16px 18px; }
 .chips { display: flex; gap: 8px; margin-bottom: 16px; }
 .chip { flex: 1; height: 46px; border-radius: 14px; background: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 16px; font-weight: 600; transition: background .3s, color .3s, transform .45s var(--spring); }
-.chip .ic { width: 0; height: 14px; opacity: 0; transition: width .3s var(--spring), opacity .2s; }
 .chip.on { background: var(--ios-blue); color: #fff; }
-.chip.on .ic { width: 14px; opacity: 1; }
 .field-toggle { cursor: pointer; }
 .switch { margin-left: auto; width: 51px; height: 31px; border-radius: 99px; background: rgba(120, 120, 128, .16); position: relative; transition: background .3s; flex: none; }
 .switch i { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0, 0, 0, .15), 0 0 0 .5px rgba(0, 0, 0, .04); transition: transform .45s var(--spring); }
