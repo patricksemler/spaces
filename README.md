@@ -41,8 +41,6 @@ The demo is **guided only**. The steps drive every device, and tapping or typing
 
 Autoplay is also off by default when the system asks for reduced motion.
 
-For recording the video pitch, see [RECORDING_GUIDE.md](RECORDING_GUIDE.md).
-
 ## Steps
 | # | Step | What happens | PRD requirements |
 |---|---|---|---|
