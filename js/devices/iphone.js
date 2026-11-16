@@ -436,7 +436,7 @@ export function createIPhone(who, act) {
     $(card, '.sc-lock').hidden = !(isMaya && !sp.lockedTime && s.phase === 'chat');
     setText($(card, '.sc-lock'), `Lock ${best}`);
     $(card, '.sc-here').hidden = !(live && me.joined && !me.here);
-    $(card, '.sc-addexp').hidden = !(live && isMaya);
+    $(card, '.sc-addexp').hidden = !(live && isMaya && sp.costSplitOn);
     const owes = !isMaya && tot > 0 && me.joined && !me.paid;
     $(card, '.sc-pay').hidden = !(live && owes);
     setText($(card, '.sc-pay'), `Pay Maya ${money(pp)}`);

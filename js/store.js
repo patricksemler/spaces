@@ -154,10 +154,9 @@ export function reducer(prev, a) {
     case 'OPEN_EXPENSE': s.maya.expenseSheet = a.open !== false; return s;
     case 'EDIT_EXPENSE': s.maya.expenseDraft[a.field] = a.value; return s;
     case 'ADD_EXPENSE': {
-      if (!sp || s.phase !== 'live') return s;
+      if (!sp || s.phase !== 'live' || !sp.costSplitOn) return s;
       const label = a.label || s.maya.expenseDraft.label || 'Pizza';
       const amount = Number(a.amount ?? s.maya.expenseDraft.amount) || 40;
-      sp.costSplitOn = true;
       sp.expenses.push({ label, amount, by: 'Maya' });
       sp.members.Maya.paid = true;
       s.maya.expenseSheet = false;
