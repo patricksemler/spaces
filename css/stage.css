@@ -164,7 +164,9 @@ kbd { display: inline-block; min-width: 22px; padding: 2px 6px; margin-right: 4p
 @keyframes capInN { from { opacity: 0; transform: translateY(10px); } }
 .narrow .cap-t { font-size: 15px; }
 .narrow .cap-s { display: none; }
-.narrow .cap-k { font-size: 12px; line-height: 18px; }
+.narrow .captions { align-items: center; }
+.narrow .cap-k { font-size: 12px; line-height: 18px; padding-top: 0; }
+.narrow .cap-t { line-height: 1.25; }
 .narrow #stepbar { gap: 4px; padding: 4px; bottom: 8px; }
 .narrow .sb-dots, .narrow .sb-keys { display: none; }
 .narrow .sb-dot { padding: 0 6px; height: 36px; }
