@@ -155,15 +155,15 @@ export function createIPhone(who, act) {
         <div class="scrim scrim-pay" data-act="closePay"></div>
         <div class="sheet sheet-pay">
           <div class="pay-head"><span class="pay-brand">${I.cash} Pay</span><button class="pay-x" data-act="closePay" aria-label="Close">${I.xmark}</button></div>
-          <div class="pay-card"><span class="pay-card-brand">Cash</span><span class="pay-card-bal">Balance $62.15</span></div>
+          <div class="pay-card"><span class="pay-card-brand">${I.cash} Cash</span><span class="pay-card-bal"><small>Balance</small>$62.15</span></div>
           <div class="pay-rows">
             <div class="pay-row"><span>To</span><b>Maya</b></div>
             <div class="pay-row"><span>For</span><b class="pay-for">Pizza · Friday Hangout</b></div>
           </div>
-          <div class="pay-amt">Pay Maya <b class="pay-amt-v">$8.00</b></div>
+          <div class="pay-amt"><span>Pay Maya</span><b class="pay-amt-v">$8.00</b></div>
           <div class="pay-confirm" data-act="pay">
             <span class="pay-side">${I.side}</span>
-            <span class="pay-side-t">Double-Click to Pay</span>
+            <span class="pay-side-t">Confirm with Side Button</span>
           </div>
           <div class="pay-done"><span class="pay-done-ring">${I.check}</span><b>Done</b></div>
         </div>
