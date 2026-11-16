@@ -10,6 +10,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 
 ## How to use it
 - **Guided** (default): press **→** or **Next** to step through 6 beats. Each beat plays its taps for you, and a soft finger ripple shows where the tap lands.
+- **Intro**: a fresh open holds on a title card until you press **Play demo** (or **Space** / **→**). Links with `?beat=` skip it.
 - **Outro**: after the last beat, a closing card fades in with **Replay** and **Try it yourself**. **Esc** dismisses it.
 - **Free Play**: press **F**, or tap any control on a device. Every control works. Sam, Priya, and Alex respond on their own, and **Skip to 8 PM** starts the hangout.
 - **On a phone**: you see one device at a time. Use the Maya / Jordan / TV switcher. It also follows whichever device is being tapped.
@@ -17,7 +18,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 | Key | Action |
 |---|---|
 | ← / → | Previous / next beat |
-| Space | Pause or resume autoplay (on by default; add `?autoplay=0` to start paused) |
+| Space | Pause or resume autoplay (on by default once the demo is started; add `?autoplay=0` to step through by hand) |
 | 1–6 | Jump to a beat |
 | F | Switch between Guided and Free Play |
 | H | Hide controls and captions (for clean screen recording) |

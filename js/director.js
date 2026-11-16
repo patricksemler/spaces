@@ -148,6 +148,7 @@ function goto(n, { play = true, instant = false } = {}) {
   clearTimeout(autoTimer);
   clearTimers();
   const token = runToken;
+  hideIntro();
   hideOutro();
   const ui = store.getState().ui;
   // Stepping forward to the next beat glides: whatever the current beat had
@@ -222,6 +223,7 @@ $('.sb-keys').onclick = () => html.classList.toggle('show-keys');
 addEventListener('pointerdown', (e) => { if (!e.target.closest('.keys-help, .sb-keys')) html.classList.remove('show-keys'); });
 
 function next() {
+  if (html.classList.contains('intro')) return startRun();
   const { beat } = store.getState().ui;
   if (beat < BEATS.length - 1) goto(beat + 1);
   else if (!html.classList.contains('outro')) {
@@ -230,6 +232,24 @@ function next() {
     showOutro();
   }
 }
+
+// ---------- intro: title card that holds until the run is started ----------
+const intro = $('#intro');
+let introAutoplay = false;
+function showIntro() {
+  intro.inert = false;
+  html.classList.add('intro');
+}
+function hideIntro() {
+  intro.inert = true;
+  html.classList.remove('intro');
+}
+function startRun() {
+  if (introAutoplay) setAutoplay(true);
+  else goto(0);
+}
+$('.intro-play').onclick = () => startRun();
+$('.intro-free').onclick = () => setMode('free');
 
 // ---------- outro: closing card after the last step ----------
 const outro = $('#outro');
@@ -267,6 +287,7 @@ let started = false;
 function setMode(mode, keepState) {
   runToken += 1;
   clearTimeout(autoTimer);
+  hideIntro();
   hideOutro();
   if (mode === 'free') {
     store.dispatch({ type: 'SET_UI', patch: { mode: 'free', autoplay: false } });
@@ -333,14 +354,15 @@ function toast(msg) {
 addEventListener('keydown', (e) => {
   if (e.target.matches('input, textarea')) return;
   const { beat, mode } = store.getState().ui;
-  if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+  if (html.classList.contains('intro') && (e.key === ' ' || e.key === 'Enter') && !e.target.closest('button')) { e.preventDefault(); startRun(); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
   else if (e.key === 'ArrowLeft') { e.preventDefault(); goto(beat - 1, { play: false, instant: true }); }
   else if (e.key === ' ') { e.preventDefault(); setAutoplay(!store.getState().ui.autoplay); }
   else if (e.key === 'h' || e.key === 'H') { html.classList.toggle('clean'); layout(); }
   else if (e.key === 'r' || e.key === 'R') { if (mode === 'free') resetFree(); else goto(0, { play: false }); }
   else if (e.key === 'f' || e.key === 'F') setMode(mode === 'free' ? 'guided' : 'free');
   else if (/^[1-9]$/.test(e.key) && +e.key <= BEATS.length) goto(+e.key - 1);
-  else if (e.key === 'Escape') { html.classList.remove('show-keys'); hideOutro(); }
+  else if (e.key === 'Escape') { html.classList.remove('show-keys'); hideIntro(); hideOutro(); }
 });
 
 // ---------- mobile switcher ----------
@@ -357,8 +379,16 @@ if (params.get('mode') === 'free') {
 } else {
   const isStatic = params.get('static') === '1';
   // Autoplay is on by default (off for static/frozen captures, reduced motion, or ?autoplay=0)
-  if (!isStatic && !frozen && !reduced && params.get('autoplay') !== '0') store.dispatch({ type: 'SET_UI', patch: { autoplay: true } });
-  goto(startBeat, { play: !isStatic, instant: isStatic });
+  const auto = !isStatic && !frozen && !reduced && params.get('autoplay') !== '0';
+  if (!isStatic && !frozen && !params.has('beat')) {
+    // A fresh open holds on the intro card; the run starts from there.
+    introAutoplay = auto;
+    goto(0, { play: false });
+    showIntro();
+  } else {
+    if (auto) store.dispatch({ type: 'SET_UI', patch: { autoplay: true } });
+    goto(startBeat, { play: !isStatic, instant: isStatic });
+  }
 }
 if (params.get('dev')) { activeDev = params.get('dev'); layout(); }
 booted = true;
