@@ -6,6 +6,8 @@ Spaces is a temporary Space that starts in the group chat, so a friend group can
 
 This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's iPhone (joiner), and the Living Room Apple TV in Maya's apartment. All three run on **one shared state store**, so whatever happens on one device shows up on the others in the same frame. That's the point we want judges to see: Spaces is **live and cross-device**. It isn't a static invite.
 
+**PRD:** [PRD.md](PRD.md) in this repo, or the [Google Doc version](https://docs.google.com/document/d/1ts2kW_WFapLaut8p0cIzKxEmA2gLMGyUE3NhrULfXZI/edit?usp=sharing). The scope is iPhone plus one shared Apple TV, and one type of Space: a temporary hangout.
+
 ![Step 4: the Space goes live](screenshots/beat-3-live.png)
 
 ## How to use it
@@ -42,6 +44,8 @@ The demo is **guided only**. The steps drive every device, and tapping or typing
 Autoplay is also off by default when the system asks for reduced motion.
 
 ## Steps
+The requirement IDs in the last column are the functional requirements in [PRD.md](PRD.md#functional-requirements). FR-10 (photo, video, and music sharing) is P2 and isn't in the demo.
+
 | # | Step | What happens | PRD requirements |
 |---|---|---|---|
 | 1 | Today | The plan stalls in the group chat. Maya says she'll make a Space | Problem |
