@@ -61,7 +61,7 @@ function layout() {
   const narrow = vw < NARROW;
   cls(html, 'narrow', narrow);
   if (!narrow) {
-    const barH = html.classList.contains('clean') ? 0 : 64;
+    const barH = html.classList.contains('clean') ? 0 : 60;
     const s = Math.min(vw / 1920, (vh - barH) / 1080);
     stage.style.setProperty('--s', s);
     stage.style.left = `${(vw - 1920 * s) / 2}px`;
@@ -181,7 +181,7 @@ function goto(n, { play = true, instant = false } = {}) {
 // ---------- captions + step bar ----------
 function setCaption(n) {
   const b = BEATS[n];
-  $('.cap-k').textContent = `${n + 1} / ${BEATS.length}`;
+  $('.cap-k').textContent = `Step ${n + 1} of ${BEATS.length}`;
   $('.cap-t').textContent = b.title;
   $('.cap-s').textContent = b.line;
   const cap = $('.captions');
@@ -191,21 +191,24 @@ function setCaption(n) {
 }
 
 const bar = $('#stepbar');
+const STEP_NAMES = ['Today', 'Create', 'Invite', 'Live', 'Split', 'End'];
 bar.innerHTML = `
-  <div class="sb-guided">
-    <button class="sbtn sb-back" aria-label="Previous beat">${I.chevronLeft}</button>
-    <div class="sb-dots">${BEATS.map((b, i) => `<button class="sb-dot" data-i="${i}" title="${i + 1}. ${b.title}"><i></i><span>${['Today', 'Create', 'Invite', 'Live', 'Split', 'End'][i]}</span></button>`).join('')}</div>
-    <button class="sbtn sb-next" aria-label="Next beat">${I.chevronRight}</button>
+  <div class="sb-transport">
+    <button class="sbtn sb-back" aria-label="Previous step">${I.chevronLeft}</button>
     <button class="sbtn sb-auto" aria-label="Autoplay"><span class="ic-play">${I.play}</span><span class="ic-pause">${I.pause}</span></button>
+    <button class="sbtn sb-next" aria-label="Next step">${I.chevronRight}</button>
   </div>
+  <div class="sb-dots">${BEATS.map((b, i) => `<button class="sb-dot" data-i="${i}" title="${b.title}"><i></i><span><em>${i + 1}</em>${STEP_NAMES[i]}</span></button>`).join('')}</div>
   <div class="sb-free">
     <button class="sbtn-text sb-golive">${I.clock}<span>Skip to 8 PM</span></button>
     <button class="sbtn-text sb-reset">${I.reset}<span>Reset</span></button>
   </div>
-  <div class="sb-mode" role="tablist">
-    <button data-mode="guided">Guided</button><button data-mode="free">Free Play</button>
-  </div>
-  <button class="sbtn sb-keys" aria-label="Keyboard shortcuts">?</button>`;
+  <div class="sb-side">
+    <div class="sb-mode" role="group" aria-label="Mode">
+      <button data-mode="guided">Guided</button><button data-mode="free">Free Play</button>
+    </div>
+    <button class="sbtn sb-keys" aria-label="Keyboard shortcuts">${I.keyboard}</button>
+  </div>`;
 
 $('.sb-back').onclick = () => goto(store.getState().ui.beat - 1, { play: false, instant: true });
 $('.sb-next').onclick = () => next();
@@ -215,6 +218,7 @@ $$(bar, '.sb-mode button').forEach((b) => (b.onclick = () => setMode(b.dataset.m
 $('.sb-reset').onclick = () => resetFree();
 $('.sb-golive').onclick = () => { const s = store.getState(); if (s.space) { freeSim({ type: 'GO_LIVE' }); store.dispatch({ type: 'GO_LIVE' }); } else toast('Create a Space on Maya’s phone first (tap +)'); };
 $('.sb-keys').onclick = () => html.classList.toggle('show-keys');
+addEventListener('pointerdown', (e) => { if (!e.target.closest('.keys-help, .sb-keys')) html.classList.remove('show-keys'); });
 
 function next() {
   const { beat } = store.getState().ui;
@@ -225,7 +229,7 @@ function next() {
 function renderBar(s) {
   const { beat, mode, autoplay } = s.ui;
   cls(html, 'mode-free', mode === 'free');
-  $$(bar, '.sb-dot').forEach((d, i) => { cls(d, 'on', i === beat); cls(d, 'done', i < beat); });
+  $$(bar, '.sb-dot').forEach((d, i) => { cls(d, 'on', i === beat); cls(d, 'done', i < beat); if (i === beat) d.setAttribute('aria-current', 'step'); else d.removeAttribute('aria-current'); });
   $$(bar, '.sb-mode button').forEach((b) => cls(b, 'on', b.dataset.mode === mode));
   cls(bar, 'playing', autoplay);
   $('.sb-golive').disabled = s.phase !== 'chat';
