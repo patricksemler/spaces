@@ -148,6 +148,7 @@ function goto(n, { play = true, instant = false } = {}) {
   clearTimeout(autoTimer);
   clearTimers();
   const token = runToken;
+  hideOutro();
   const ui = store.getState().ui;
   // Stepping forward to the next beat glides: whatever the current beat had
   // left to do animates into place. Any other jump is an instant cut.
@@ -171,7 +172,7 @@ function goto(n, { play = true, instant = false } = {}) {
       if (done && token === runToken && store.getState().ui.autoplay) {
         autoTimer = setTimeout(() => {
           if (n < BEATS.length - 1) goto(n + 1);
-          else setAutoplay(false);
+          else { setAutoplay(false); showOutro(); }
         }, 3000);
       }
     }, 350);
@@ -223,8 +224,26 @@ addEventListener('pointerdown', (e) => { if (!e.target.closest('.keys-help, .sb-
 function next() {
   const { beat } = store.getState().ui;
   if (beat < BEATS.length - 1) goto(beat + 1);
-  else goto(beat);
+  else if (!html.classList.contains('outro')) {
+    // Past the last step: settle the final state, then roll the outro.
+    goto(beat, { play: false, instant: true });
+    showOutro();
+  }
 }
+
+// ---------- outro: closing card after the last step ----------
+const outro = $('#outro');
+function showOutro() {
+  if (store.getState().ui.mode !== 'guided') return;
+  outro.inert = false;
+  html.classList.add('outro');
+}
+function hideOutro() {
+  outro.inert = true;
+  html.classList.remove('outro');
+}
+$('.outro-replay').onclick = () => setAutoplay(true);
+$('.outro-free').onclick = () => setMode('free');
 
 function renderBar(s) {
   const { beat, mode, autoplay } = s.ui;
@@ -248,6 +267,7 @@ let started = false;
 function setMode(mode, keepState) {
   runToken += 1;
   clearTimeout(autoTimer);
+  hideOutro();
   if (mode === 'free') {
     store.dispatch({ type: 'SET_UI', patch: { mode: 'free', autoplay: false } });
     if (!keepState) resetFree();
@@ -320,7 +340,7 @@ addEventListener('keydown', (e) => {
   else if (e.key === 'r' || e.key === 'R') { if (mode === 'free') resetFree(); else goto(0, { play: false }); }
   else if (e.key === 'f' || e.key === 'F') setMode(mode === 'free' ? 'guided' : 'free');
   else if (/^[1-9]$/.test(e.key) && +e.key <= BEATS.length) goto(+e.key - 1);
-  else if (e.key === 'Escape') html.classList.remove('show-keys');
+  else if (e.key === 'Escape') { html.classList.remove('show-keys'); hideOutro(); }
 });
 
 // ---------- mobile switcher ----------

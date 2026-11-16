@@ -10,6 +10,7 @@ This prototype shows three devices at once: Maya's iPhone (organizer), Jordan's 
 
 ## How to use it
 - **Guided** (default): press **→** or **Next** to step through 6 beats. Each beat plays its taps for you, and a soft finger ripple shows where the tap lands.
+- **Outro**: after the last beat, a closing card fades in with **Replay** and **Try it yourself**. **Esc** dismisses it.
 - **Free Play**: press **F**, or tap any control on a device. Every control works. Sam, Priya, and Alex respond on their own, and **Skip to 8 PM** starts the hangout.
 - **On a phone**: you see one device at a time. Use the Maya / Jordan / TV switcher. It also follows whichever device is being tapped.
 

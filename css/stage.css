@@ -68,6 +68,31 @@ html:not(.ready) #stage { opacity: 0; }
 }
 .pressed { filter: brightness(.88); transform: scale(.97); transition: transform .12s ease, filter .12s ease; }
 
+/* ---- outro: closing card over the dimmed stage ---- */
+#outro {
+  position: absolute; inset: 0; z-index: 45;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 0 24px; text-align: center;
+  background: rgba(10, 10, 12, .86);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  opacity: 0; visibility: hidden;
+  transition: opacity .6s ease, visibility 0s .6s;
+}
+.outro #outro { opacity: 1; visibility: visible; transition: opacity .6s ease; }
+#outro > * { transform: translateY(8px); transition: transform .7s var(--ease-out); }
+.outro #outro > * { transform: none; }
+#outro svg { width: 56px; height: 56px; color: var(--stage-ink); }
+#outro h2 { margin: 26px 0 0; font: 600 44px/1.15 var(--font-display); letter-spacing: -1px; text-wrap: balance; }
+#outro p { margin: 14px 0 0; max-width: 600px; font-size: 19px; line-height: 1.45; color: var(--stage-ink2); text-wrap: pretty; }
+.outro-actions { display: flex; gap: 10px; margin-top: 34px; }
+.outro-actions button {
+  height: 40px; padding: 0 18px; border-radius: 20px; font-size: 15px; font-weight: 500;
+  background: rgba(255, 255, 255, .1); transition: background .15s;
+}
+.outro-actions button:hover { background: rgba(255, 255, 255, .17); }
+.outro-actions .outro-replay { background: var(--stage-ink); color: #0a0a0c; }
+.outro-actions .outro-replay:hover { background: #fff; }
+
 /* ---- control bar: transport · steps · mode ---- */
 #stepbar {
   position: fixed; left: 0; right: 0; bottom: 0; height: 60px; z-index: 50;
@@ -165,6 +190,7 @@ kbd {
 .clean #stepbar { opacity: 0; pointer-events: none; transform: translateY(100%); }
 .clean .captions { display: none; }
 .clean .keys-help { display: none; }
+.clean .outro-actions { display: none; }
 
 /* ---- mobile: one device at a time ---- */
 .switcher { display: none; }
@@ -190,6 +216,11 @@ kbd {
 .narrow .cap-k { font-size: 12px; }
 .narrow .cap-t { font-size: 15px; line-height: 1.25; letter-spacing: -.2px; }
 .narrow .cap-s { display: none; }
+.narrow #outro { position: fixed; }
+.narrow #outro svg { width: 44px; height: 44px; }
+.narrow #outro h2 { margin-top: 20px; font-size: 28px; letter-spacing: -.5px; }
+.narrow #outro p { font-size: 16px; }
+.narrow .outro-actions { margin-top: 26px; }
 .narrow #stepbar { display: flex; justify-content: space-between; gap: 8px; height: 56px; padding: 0 12px; }
 .narrow .sb-dots, .narrow .sb-keys { display: none; }
 .narrow.mode-free .sb-transport { display: none; }
