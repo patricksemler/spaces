@@ -211,7 +211,39 @@ export function createIPhone(who, act) {
 
   // ---- inputs (free play) ----
   $$(root, 'input[data-field]').forEach((inp) => inp.addEventListener('input', () => act({ type: 'EDIT_DRAFT', field: inp.dataset.field, value: inp.value }, true)));
-  $$(root, 'input[data-efield]').forEach((inp) => inp.addEventListener('input', () => act({ type: 'EDIT_EXPENSE', field: inp.dataset.efield, value: inp.value.replace(/[^0-9.]/g, '') }, true)));
+  const expLabel = q('.in-exp-label');
+  expLabel.addEventListener('input', () => act({ type: 'EDIT_EXPENSE', field: 'label', value: expLabel.value }, true));
+
+  // Amount works like Apple Cash: the "$" is always there, only digits and
+  // one "." get in, and cents stop at two places.
+  const expAmt = q('.in-exp-amt');
+  const cleanAmount = (raw) => {
+    let [whole, ...rest] = raw.replace(/[^0-9.]/g, '').split('.');
+    whole = whole.replace(/^0+(?=\d)/, '').slice(0, 5);
+    if (!rest.length) return whole;
+    return `${whole || '0'}.${rest.join('').slice(0, 2)}`;
+  };
+  const caretToEnd = () => { const n = expAmt.value.length; expAmt.setSelectionRange(n, n); };
+  expAmt.addEventListener('beforeinput', (e) => {
+    if (e.data && /[^0-9.]/.test(e.data)) e.preventDefault();
+    if (e.data === '.' && expAmt.value.includes('.')) e.preventDefault();
+  });
+  expAmt.addEventListener('focus', () => {
+    if (!expAmt.value) expAmt.value = '$';
+    requestAnimationFrame(caretToEnd);
+  });
+  expAmt.addEventListener('blur', () => { if (expAmt.value === '$') expAmt.value = ''; });
+  expAmt.addEventListener('input', () => {
+    const v = cleanAmount(expAmt.value);
+    expAmt.value = '$' + v;
+    caretToEnd();
+    act({ type: 'EDIT_EXPENSE', field: 'amount', value: v }, true);
+  });
+  expAmt.addEventListener('keydown', (e) => {
+    // keep the caret after the "$" so it can't be deleted or typed before
+    if (['ArrowLeft', 'Home', 'ArrowUp'].includes(e.key) && expAmt.selectionStart <= 1) e.preventDefault();
+  });
+  expAmt.addEventListener('click', () => { if (expAmt.selectionStart < 1) caretToEnd(); });
 
   root.addEventListener('click', (e) => {
     const t = e.target.closest('[data-act]');
