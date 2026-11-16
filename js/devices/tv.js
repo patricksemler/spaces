@@ -1,6 +1,6 @@
 import { I } from '../icons.js';
 import { el, $, $$, setText, cls, avatar, noAnim } from '../ui.js';
-import { PEOPLE, joined, hereList, total, perPerson, paidCount, money, fmtClock, timeLeft } from '../store.js';
+import { PEOPLE, joined, hereList, total, perPerson, paidCount, expenseLabel, money, fmtClock } from '../store.js';
 
 const APPS = [
   ['TV', I.tvApp, 'linear-gradient(160deg,#2c2c2e,#000)'],
@@ -77,6 +77,10 @@ export function createTV() {
     setText(q('.tvh-sp-name'), sp.name);
     setText(q('.tvh-sp-sub'), `Tonight at ${sp.lockedTime || ''}`);
     setText(q('.tvb-title'), sp.name);
+    // long names step the headline down so it stays on one line
+    q('.tvb-title').dataset.len = sp.name.length > 19 ? 'xl' : sp.name.length > 14 ? 'l' : '';
+    // no cost splitting in this Space: the board is just the people
+    cls(root, 'no-split', !sp.costSplitOn);
     setText(q('.tvb-time'), (sp.lockedTime || '8 PM').replace(' PM', ':00 PM'));
     setText(q('.tvb-place'), sp.place);
     const jn = joined(sp).length;
@@ -94,8 +98,10 @@ export function createTV() {
       cls(cost, 'has', tot > 0);
       cls(cost, 'fx', tot > 0 && !noAnim()); // pop only when the cost arrives live
     }
-    setText(q('.tvb-cost-big'), tot ? `${money(perPerson(sp))} each` : '—');
-    setText(q('.tvb-cost-sub'), tot ? `${sp.expenses[0].label} · ${money(tot)}` : 'No expenses yet');
+    const each = tot ? `${money(perPerson(sp))} each` : '—';
+    setText(q('.tvb-cost-big'), each);
+    cls(q('.tvb-cost-big'), 'long', each.length > 9);
+    setText(q('.tvb-cost-sub'), tot ? `${expenseLabel(sp)} · ${money(tot)}` : 'No expenses yet');
     setText(q('.tvb-cost-paid'), tot ? `${pc} of ${jn} paid` : ' ');
     q('.tvb-cost-bar i').style.transform = `scaleX(${tot ? pc / jn : 0})`;
   }

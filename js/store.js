@@ -35,21 +35,24 @@ export function initialState() {
     space: null,
     jordan: { screen: 'messages', locPrompt: false, paySheet: false, payStage: 'idle' },
     tv: { screen: 'home' },
-    ui: { beat: 0, captions: true, autoplay: false },
+    ui: { mode: 'guided', beat: 0, captions: true, autoplay: false },
   };
 }
 
 function newSpace(draft) {
   const members = {};
   PEOPLE.forEach((p) => {
-    members[p] = { joined: p === 'Maya', here: false, location: 'off', paid: false };
+    // paid is the amount this person has sent Maya so far
+    members[p] = { joined: p === 'Maya', here: false, location: 'off', paid: 0 };
   });
+  const times = [...draft.times].sort((a, b) => TIMES.indexOf(a) - TIMES.indexOf(b));
   return {
-    name: draft.name || 'Friday Hangout',
-    place: draft.place || "Maya's apartment",
-    times: draft.times.length ? [...draft.times].sort((a, b) => TIMES.indexOf(a) - TIMES.indexOf(b)) : ['8 PM'],
+    name: draft.name.trim() || 'Friday Hangout',
+    place: draft.place.trim() || 'Maya’s apartment',
+    times,
     votes: { Maya: [], Jordan: [], Sam: [], Priya: [], Alex: [] },
-    lockedTime: null,
+    // One time offered means there is nothing to vote on: it is the time.
+    lockedTime: times.length === 1 ? times[0] : null,
     costSplitOn: !!draft.costSplit,
     members,
     expenses: [],
@@ -95,7 +98,7 @@ export function reducer(prev, a) {
       return s;
     }
     case 'SEND_SPACE': {
-      if (sp) return s;
+      if (sp || !s.maya.draft.times.length) return s;
       s.space = newSpace(s.maya.draft);
       s.maya.sheet = false;
       s.maya.plusMenu = false;
@@ -104,7 +107,10 @@ export function reducer(prev, a) {
       return s;
     }
     case 'JOIN':
-      if (sp && !sp.ended) sp.members[a.person].joined = true;
+      if (!sp || sp.ended) return s;
+      sp.members[a.person].joined = true;
+      // Joining a Space that is already live asks about location right away.
+      if (a.person === 'Jordan' && s.phase === 'live' && !s.jordan.asked) s.jordan.locPrompt = true;
       return s;
     case 'VOTE': {
       if (!sp || sp.lockedTime || sp.ended) return s;
@@ -116,7 +122,7 @@ export function reducer(prev, a) {
       return s;
     }
     case 'LOCK_TIME':
-      if (!sp || sp.ended) return s;
+      if (!sp || sp.ended || sp.lockedTime || s.phase !== 'chat') return s;
       sp.lockedTime = a.time;
       sys(s, `Maya set the time to ${a.time}`);
       return s;
@@ -124,9 +130,10 @@ export function reducer(prev, a) {
       if (!sp || s.phase !== 'chat') return s;
       if (!sp.lockedTime) sp.lockedTime = bestTime(sp);
       s.phase = 'live';
-      s.clock = Math.max(s.clock, H(20));
+      s.clock = Math.max(s.clock, startOf(sp.lockedTime));
       s.tv.screen = 'board';
-      s.jordan.screen = 'lock';
+      // Only people in the Space get its Live Activity.
+      if (sp.members.Jordan.joined) s.jordan.screen = 'lock';
       // Maya is the host and already at the apartment, so she is here the moment
       // the Space goes live (no "On the way" flash before her arrival).
       sp.members.Maya.location = 'on';
@@ -155,10 +162,10 @@ export function reducer(prev, a) {
     case 'EDIT_EXPENSE': s.maya.expenseDraft[a.field] = a.value; return s;
     case 'ADD_EXPENSE': {
       if (!sp || s.phase !== 'live' || !sp.costSplitOn) return s;
-      const label = a.label || s.maya.expenseDraft.label || 'Pizza';
-      const amount = Number(a.amount ?? s.maya.expenseDraft.amount) || 40;
+      const amount = Number(a.amount ?? s.maya.expenseDraft.amount);
+      if (!(amount > 0)) return s;
+      const label = (a.label || s.maya.expenseDraft.label).trim() || 'Pizza';
       sp.expenses.push({ label, amount, by: 'Maya' });
-      sp.members.Maya.paid = true;
       s.maya.expenseSheet = false;
       s.maya.expenseDraft = { label: '', amount: '' };
       if (a.clock) s.clock = a.clock;
@@ -169,15 +176,16 @@ export function reducer(prev, a) {
       s.jordan.payStage = 'idle';
       return s;
     case 'PAY':
-      if (!sp || !sp.expenses.length) return s;
-      sp.members[a.person].paid = true;
+      if (!sp || !sp.expenses.length || owes(sp, a.person) <= 0) return s;
+      sp.members[a.person].paid = perPerson(sp);
       if (a.person === 'Jordan') s.jordan.payStage = 'done';
       return s;
     case 'END_SPACE':
       if (!sp || s.phase !== 'live') return s;
       s.phase = 'ended';
       sp.ended = true;
-      Object.values(sp.members).forEach((m) => { if (m.location === 'on') m.location = 'off'; });
+      // sharing stops for everyone; `shared` just remembers who had it on
+      Object.values(sp.members).forEach((m) => { if (m.location === 'on') { m.location = 'off'; m.shared = true; } });
       s.tv.screen = 'home';
       s.maya.summary = true;
       s.maya.expenseSheet = false;
@@ -188,8 +196,9 @@ export function reducer(prev, a) {
       sys(s, `${sp.name} ended`);
       return s;
     case 'KEEP_PLAN':
+      if (!sp || !sp.ended) return s;
       s.maya.summary = false;
-      if (sp) sp.kept = a.keep !== false;
+      sp.kept = a.keep !== false;
       return s;
     default:
       return s;
@@ -208,7 +217,26 @@ export const perPerson = (sp) => {
   const n = joined(sp).length || 1;
   return total(sp) / n;
 };
-export const paidCount = (sp) => joined(sp).filter((p) => sp.members[p].paid).length;
+// Maya fronts every expense, so she is settled as soon as there is one. Everyone
+// else is settled once what they have sent covers their share. A second expense
+// (or a smaller share after someone joins) is handled by the same comparison.
+export const owes = (sp, p) => {
+  if (p === 'Maya' || !sp.members[p].joined) return 0;
+  const due = perPerson(sp) - sp.members[p].paid;
+  return due > 0.004 ? due : 0;
+};
+export const isPaid = (sp, p) => total(sp) > 0 && sp.members[p].joined && owes(sp, p) === 0;
+export const paidCount = (sp) => joined(sp).filter((p) => isPaid(sp, p)).length;
+export const outstanding = (sp) => PEOPLE.reduce((n, p) => n + owes(sp, p), 0);
+// "Pizza", "Pizza + Drinks", "Pizza + 2 more"
+export function expenseLabel(sp) {
+  const e = sp.expenses;
+  if (!e.length) return '';
+  if (e.length === 1) return e[0].label;
+  return e.length === 2 ? `${e[0].label} + ${e[1].label}` : `${e[0].label} + ${e.length - 1} more`;
+}
+// "8 PM" -> minutes since midnight
+export const startOf = (t) => H(12 + parseInt(t, 10));
 export const money = (n) => '$' + (Math.round(n * 100) / 100).toFixed(n % 1 ? 2 : 0);
 export const money2 = (n) => '$' + n.toFixed(2);
 export function fmtClock(min) {

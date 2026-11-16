@@ -24,7 +24,7 @@
 .tvh-sp-ic { width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; background: var(--ios-blue); }
 .tvh-sp-ic .ic { width: 40px; height: 40px; }
 .tvh-spaces div { display: flex; flex-direction: column; gap: 4px; }
-.tvh-sp-name { font: 700 30px/1 var(--font-display); }
+.tvh-sp-name { font: 700 30px/1.15 var(--font-display); max-width: 620px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tvh-sp-sub { font-size: 19px; opacity: .8; }
 .shelf-space .tvh-shelf-copy { opacity: 0; transform: translateY(-20px); }
 .shelf-space .tvh-spaces { opacity: 1; transform: none; }
@@ -50,11 +50,14 @@
 .tvb-badge { display: inline-flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; padding: 9px 18px 9px 12px; border-radius: 99px; background: rgba(52, 199, 89, .22); color: #7ef29a; }
 .tvb-badge .ic { width: 26px; height: 26px; }
 .tvb-clock { font-size: 26px; font-weight: 500; opacity: .85; font-variant-numeric: tabular-nums; }
-.tvb-title { font: 800 92px/1 var(--font-display); letter-spacing: -2.5px; margin-top: 34px; }
+.tvb-title { font: 800 92px/1 var(--font-display); letter-spacing: -2.5px; margin: 20px 0 -14px; padding: 14px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tvb-title[data-len="l"] { font-size: 78px; letter-spacing: -2px; }
+.tvb-title[data-len="xl"] { font-size: 62px; letter-spacing: -1.5px; }
 .tvb-meta { display: flex; align-items: center; gap: 36px; margin-top: 18px; font-size: 26px; color: rgba(255, 255, 255, .78); }
 .tvb-meta span { display: flex; align-items: center; gap: 10px; }
 .tvb-meta .ic { width: 24px; height: 24px; opacity: .8; }
-.tvb-meta b { color: #fff; font-weight: 600; }
+.tvb-meta b { color: #fff; font-weight: 600; white-space: nowrap; }
+.tvb-meta span { flex: none; }
 .tvb-left { margin-left: auto; font-size: 21px; font-variant-numeric: tabular-nums; }
 .tvb-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 26px; margin-top: 40px; flex: 1; min-height: 0; }
 .tvb-tile { border-radius: 30px; padding: 26px 30px; background: rgba(255, 255, 255, .08); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 0 1px rgba(255, 255, 255, .06); display: flex; flex-direction: column; }
@@ -71,6 +74,12 @@
 .tvb-cost-ic .ic { width: 30px; height: 30px; color: #4cd964; }
 .tvb-cost-big { font: 800 64px/1 var(--font-display); letter-spacing: -1.5px; margin-top: 18px; font-variant-numeric: tabular-nums; opacity: .35; transition: opacity .4s; }
 .tvb-cost.has .tvb-cost-big { opacity: 1; }
+.tvb-cost-big.long { font-size: 50px; letter-spacing: -1px; }
+.tvb-cost-sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* a Space without cost splitting: the people tile takes the whole board */
+.no-split .tvb-grid { grid-template-columns: 1fr; }
+.no-split .tvb-cost { display: none; }
+.no-split .tvb-avs { justify-content: space-evenly; }
 .tvb-cost.has.fx .tvb-cost-big { animation: pop .7s var(--spring); }
 .tvb-cost:not(.has) .tvb-cost-big, .tvb-cost:not(.has) .tvb-cost-bar { display: none; }
 .tvb-cost:not(.has) .tvb-cost-sub { margin-top: 18px; }

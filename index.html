@@ -50,6 +50,7 @@
         <p>A temporary Space for one hangout, from the group chat to every device. Here’s a Friday night in six steps.</p>
         <div class="card-actions">
           <button class="card-primary intro-play">Play demo</button>
+          <button class="intro-free">Try it yourself</button>
         </div>
       </div>
       <div id="outro" class="titlecard" role="dialog" aria-label="End of demo" inert>
@@ -58,6 +59,7 @@
         <p>Spaces starts in the group chat, runs live on every device, and ends when the night does.</p>
         <div class="card-actions">
           <button class="card-primary outro-replay">Replay</button>
+          <button class="outro-free">Try it yourself</button>
           <button class="outro-close">Close</button>
         </div>
       </div>
@@ -74,10 +76,12 @@
       <div><dt>Previous / next step</dt><dd><kbd>←</kbd><kbd>→</kbd></dd></div>
       <div><dt>Autoplay</dt><dd><kbd>Space</kbd></dd></div>
       <div><dt>Jump to a step</dt><dd><kbd>1</kbd>–<kbd>6</kbd></dd></div>
+      <div><dt>Guided / Free Play</dt><dd><kbd>F</kbd></dd></div>
       <div><dt>Hide controls for recording</dt><dd><kbd>H</kbd></dd></div>
-      <div><dt>Restart</dt><dd><kbd>R</kbd></dd></div>
+      <div><dt>Restart, or reset Free Play</dt><dd><kbd>R</kbd></dd></div>
     </dl>
   </div>
+  <div id="toast" role="status"></div>
   <noscript><p style="padding:24px;font:16px system-ui">This prototype needs JavaScript.</p></noscript>
   <script type="module" src="js/director.js"></script>
 </body>
