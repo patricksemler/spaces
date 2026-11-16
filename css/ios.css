@@ -220,9 +220,7 @@
 .grabber { width: 36px; height: 5px; border-radius: 3px; background: rgba(60, 60, 67, .3); margin: 0 auto 10px; }
 .sheet-create { top: 66px; }
 .create-open .sheet-create, .expense-open .sheet-expense, .summary-open .sheet-summary, .pay-open .sheet-pay { transform: none; }
-.screen { transition: background-color .5s; }
-.create-open .screen { background-color: #000; }
-.create-open .app-messages { transform: scale(.93) translateY(10px); border-radius: 40px; filter: brightness(.85); }
+.create-open .app-messages { filter: brightness(.85); }
 .app-messages { transition: transform .62s var(--spring-soft), filter .5s, border-radius .5s; transform-origin: 50% 0; overflow: hidden; background: var(--bg); }
 .sh-head { display: grid; grid-template-columns: 80px 1fr 80px; align-items: center; height: 44px; margin-bottom: 8px; }
 .sh-head b { text-align: center; font-size: 17px; font-weight: 600; }
