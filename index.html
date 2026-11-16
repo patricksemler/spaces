@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Spaces Prototype</title>
+  <meta name="description" content="Spaces: a temporary Space that starts in the group chat and runs one hangout across iPhone and Apple TV, then turns itself off. Concept prototype by Product@TAMU students.">
+  <meta property="og:title" content="Spaces Prototype">
+  <meta property="og:description" content="One hangout, live across every device, then it turns itself off. A Product@TAMU concept prototype.">
+  <meta property="og:image" content="screenshots/beat-3-live.png">
+  <meta name="theme-color" content="#0b0b10">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230A84FF'/%3E%3Ccircle cx='9.5' cy='12' r='5' fill='none' stroke='white' stroke-width='1.8'/%3E%3Ccircle cx='14.5' cy='12' r='5' fill='none' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/stage.css">
+  <link rel="stylesheet" href="css/ios.css">
+  <link rel="stylesheet" href="css/tvos.css">
+  <link rel="stylesheet" href="css/android.css">
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="9" cy="12" r="6.2"/><circle cx="15" cy="12" r="6.2"/></svg></span>
+          <b>Spaces</b>
+          <span class="brand-sub">One hangout, live on every device. Then it turns itself off.</span>
+        </div>
+        <div class="topbar-r"><span class="pill-concept">Concept prototype</span></div>
+      </header>
+
+      <section class="slot slot-maya" data-dev="maya">
+        <div class="dev-scale"></div>
+        <div class="dev-label"><b>Maya’s iPhone</b><span>Organizer</span></div>
+      </section>
+      <section class="slot slot-tv" data-dev="tv">
+        <div class="dev-scale"></div>
+        <div class="dev-label"><b>Living Room Apple TV</b><span>Maya’s apartment</span></div>
+      </section>
+      <section class="slot slot-jordan" data-dev="jordan">
+        <div class="dev-scale"></div>
+        <div class="dev-label"><b>Jordan’s iPhone</b><span>Joiner</span></div>
+      </section>
+
+      <div class="android-layer">
+        <div class="an-dim"></div>
+        <div class="an-wrap">
+          <div class="an-tag"><b>Rewind: Alex is on Android.</b><span>Same Space, opened from a web link</span></div>
+          <div class="dev-scale"></div>
+        </div>
+      </div>
+
+      <div class="captions">
+        <span class="cap-k">1 / 7</span>
+        <div class="cap-body"><b class="cap-t"></b><span class="cap-s"></span></div>
+      </div>
+      <div id="taps"></div>
+      <footer class="legal">Concept prototype by Product@TAMU students. Not affiliated with Apple.</footer>
+    </div>
+  </div>
+
+  <nav class="switcher" aria-label="Device">
+    <button data-dev="maya">Maya</button><button data-dev="jordan">Jordan</button><button data-dev="tv">TV</button>
+  </nav>
+  <nav id="stepbar" aria-label="Demo controls"></nav>
+  <div class="keys-help" role="dialog" aria-label="Keyboard shortcuts">
+    <b>Shortcuts</b>
+    <div><kbd>←</kbd><kbd>→</kbd> Previous / next beat</div>
+    <div><kbd>Space</kbd> Autoplay</div>
+    <div><kbd>1</kbd>–<kbd>7</kbd> Jump to a beat</div>
+    <div><kbd>F</kbd> Guided / Free Play</div>
+    <div><kbd>H</kbd> Hide controls (clean recording)</div>
+    <div><kbd>R</kbd> Reset</div>
+  </div>
+  <div id="toast" role="status"></div>
+  <noscript><p style="padding:24px;font:16px system-ui">This prototype needs JavaScript.</p></noscript>
+  <script type="module" src="js/director.js"></script>
+</body>
+</html>
