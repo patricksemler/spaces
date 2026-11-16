@@ -22,8 +22,7 @@ export function createAndroid(act) {
           <div class="wv-h">Going</div>
           <div class="wv-avs">${PEOPLE.map((p) => avatar(p, 30, 'wv-av')).join('')}</div>
           <div class="wv-h">Cost split</div>
-          <div class="wv-cost"><span class="wv-cost-t">No costs yet</span><button class="wv-pay" data-act="pay">Pay Maya $8</button><span class="wv-paid">${I.check} Paid</span></div>
-          <div class="wv-foot">Get the full experience on iPhone</div>
+          <div class="wv-cost"><div class="wv-cost-r"><span class="wv-cost-t">No expenses yet</span><span class="wv-cost-e"></span></div><span class="wv-cost-p"></span><button class="wv-pay" data-act="pay">Pay Maya $8</button><span class="wv-paid">${I.check} Paid</span></div>
         </div>
         <div class="an-nav"><i></i></div>
       </div>
@@ -55,11 +54,14 @@ export function createAndroid(act) {
       cls(b, 'mine', sp.votes.Alex.includes(t));
       cls(b, 'locked', sp.lockedTime === t);
     });
-    setText(q('.wv-free'), sp.lockedTime ? `Locked in for ${sp.lockedTime}` : (voteCount(sp, best) ? `${voteCount(sp, best)} of 5 free at ${best}` : 'No votes yet'));
+    setText(q('.wv-free'), sp.lockedTime ? `Tonight at ${sp.lockedTime}` : (voteCount(sp, best) ? `${voteCount(sp, best)} of 5 free at ${best}` : 'No votes yet'));
     $$(root, '.wv-av').forEach((a) => cls(a, 'gone', !sp.members[a.dataset.p].joined));
     const tot = total(sp);
     const jn = joined(sp).length;
-    setText(q('.wv-cost-t'), tot ? `${sp.expenses[0].label} ${money(tot)} · ${money(perPerson(sp))} each · ${paidCount(sp)} of ${jn} paid` : 'No costs yet. Maya will add them here.');
+    setText(q('.wv-cost-t'), tot ? `${sp.expenses[0].label} · ${money(tot)}` : 'No expenses yet');
+    setText(q('.wv-cost-e'), tot ? `${money(perPerson(sp))} each` : '');
+    setText(q('.wv-cost-p'), tot ? `${paidCount(sp)} of ${jn} paid` : '');
+    cls(q('.wv-times'), 'has-lock', !!sp.lockedTime);
     setText(q('.wv-pay'), `Pay Maya ${money(perPerson(sp))}`);
     q('.wv-pay').hidden = !(tot > 0 && !sp.members.Alex.paid);
     q('.wv-paid').hidden = !(tot > 0 && sp.members.Alex.paid);

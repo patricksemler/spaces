@@ -127,7 +127,7 @@ export function reducer(prev, a) {
     case 'LOCK_TIME':
       if (!sp || sp.ended) return s;
       sp.lockedTime = a.time;
-      sys(s, `Maya locked in ${a.time} · ${sp.place}`);
+      sys(s, `Maya set the time to ${a.time}`);
       return s;
     case 'GO_LIVE':
       if (!sp || s.phase !== 'chat') return s;
@@ -192,7 +192,7 @@ export function reducer(prev, a) {
       s.jordan.locPrompt = false;
       if (s.jordan.screen === 'lock') s.jordan.screen = 'messages';
       if (a.clock) s.clock = a.clock;
-      sys(s, 'Space ended · location sharing stopped');
+      sys(s, `${sp.name} ended`);
       return s;
     case 'KEEP_PLAN':
       s.maya.summary = false;

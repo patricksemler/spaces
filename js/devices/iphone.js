@@ -28,7 +28,7 @@ function islandHTML() {
         <span class="isx-avs">${PEOPLE.map((p) => avatar(p, 26, 'isx-av')).join('')}</span>
         <span class="isx-stat"><b class="isx-herecount">3 of 5</b> here</span>
       </div>
-      <div class="isx-cost"><span class="isx-costtext">No costs yet</span></div>
+      <div class="isx-cost"><span class="isx-costtext"></span><span class="isx-costpaid"></span></div>
     </div>
   </div>`;
 }
@@ -50,11 +50,12 @@ function cardHTML(me) {
     <div class="sc-live">
       <div class="sc-section-h">Who's here</div>
       <div class="sc-roster">
-        ${PEOPLE.map((p) => `<div class="ros" data-p="${p}">${avatar(p, 30)}<span class="ros-name">${p === me ? 'You' : p}</span><span class="ros-stat"><i class="dot"></i><span class="ros-t">On the way</span></span></div>`).join('')}
+        ${PEOPLE.map((p) => `<div class="ros" data-p="${p}">${avatar(p, 30)}<span class="ros-name">${p === me ? 'You' : p}</span><span class="ros-loc">${I.location}</span><span class="ros-stat"><span class="ros-t">On the way</span><i class="dot"></i></span></div>`).join('')}
       </div>
       <div class="sc-cost">
-        <div class="sc-cost-l"><span class="sc-cost-label">Cost split</span><span class="sc-cost-t">No costs yet</span></div>
+        <div class="sc-cost-l"><span class="sc-cost-t"></span><span class="sc-cost-e"></span></div>
         <div class="sc-cost-bar"><i></i></div>
+        <span class="sc-cost-p"></span>
       </div>
     </div>
     <div class="sc-actions">
@@ -66,7 +67,7 @@ function cardHTML(me) {
       <span class="sc-paid">${I.check}Paid</span>
       <button class="btn btn-destructive sc-end" data-act="end">End Space</button>
     </div>
-    <div class="sc-foot"><span class="sc-foot-t">Ends 11:00 PM</span></div>
+    <div class="sc-foot">${I.clock}<span class="sc-foot-t">Ends at 11 PM</span></div>
   </div>`;
 }
 
@@ -106,24 +107,24 @@ export function createIPhone(who, act) {
             ['Audio', I.audio, '#FF375F'],
             ['Location', I.location, '#0A84FF'],
           ].map(([n, ic, c]) => `<div class="pm-row"><span class="pm-ic" style="--bg:${c}">${ic}</span>${n}</div>`).join('')}
-          <div class="pm-row pm-spaces" data-act="openCreate"><span class="pm-ic pm-ic-spaces">${I.spaces}</span>Spaces<span class="pm-new">New</span></div>
+          <div class="pm-row pm-spaces" data-act="openCreate"><span class="pm-ic pm-ic-spaces">${I.spaces}</span>Spaces</div>
         </div>
 
         <div class="scrim scrim-sheet" data-act="closeCreate"></div>
         <div class="sheet sheet-create">
           <div class="grabber"></div>
           <div class="sh-head"><button class="sh-cancel" data-act="closeCreate">Cancel</button><b>New Space</b><button class="sh-send" data-act="send">Send</button></div>
-          <div class="sh-hero"><span class="sh-hero-ic">${I.spaces}</span><span>Plan it here. It turns itself off after.</span></div>
           <div class="field-group">
             <label class="field"><span class="field-l">Name</span><input class="in-name" placeholder="Friday Hangout" data-field="name" autocomplete="off"></label>
             <label class="field"><span class="field-l">Place</span><input class="in-place" placeholder="Add a place" data-field="place" autocomplete="off"></label>
           </div>
-          <div class="field-cap">Times · pick 2–3, the group votes</div>
+          <div class="field-cap">Times</div>
           <div class="chips">${TIMES.map((t) => `<button class="chip" data-act="draftTime" data-arg="${t}">${I.check}<span>${t}</span></button>`).join('')}</div>
+          <div class="field-note">The group votes on these.</div>
           <div class="field-group">
-            <div class="field field-toggle" data-act="toggleSplit"><span class="field-l">${I.cash}Add cost split</span><span class="switch"><i></i></span></div>
-            <div class="field field-static"><span class="field-l">${I.location}Location sharing</span><span class="field-v">Off · each person chooses</span></div>
-            <div class="field field-static"><span class="field-l">${I.clock}Ends</span><span class="field-v">11:00 PM, automatically</span></div>
+            <div class="field field-toggle" data-act="toggleSplit"><span class="field-l">${I.cash}Split Costs</span><span class="switch"><i></i></span></div>
+            <div class="field field-static"><span class="field-l">${I.location}Location Sharing</span><span class="field-v">Ask Each Person</span></div>
+            <div class="field field-static"><span class="field-l">${I.clock}Ends</span><span class="field-v">11:00 PM</span></div>
           </div>
         </div>
 
@@ -143,18 +144,18 @@ export function createIPhone(who, act) {
           <div class="sum-ic">${I.check}</div>
           <div class="sum-title">Friday Hangout ended</div>
           <ul class="sum-list">
-            <li><span class="sum-li-ic g">${I.cash}</span><span class="sum-settled">Everyone's settled up</span></li>
-            <li><span class="sum-li-ic b">${I.locOff}</span>Location sharing stopped for all 5</li>
-            <li><span class="sum-li-ic p">${I.tvApp}</span>Living Room TV went back to Home</li>
+            <li><span class="sum-li-ic g">${I.cash}</span><span class="sum-settled">Everyone paid</span></li>
+            <li><span class="sum-li-ic b">${I.locOff}</span>Location sharing is off</li>
+            <li><span class="sum-li-ic p">${I.tvApp}</span>Apple TV returned to Home</li>
           </ul>
-          <div class="sum-q">Keep the plan in the chat?</div>
-          <button class="btn btn-primary btn-wide" data-act="keep">Keep Plan</button>
+          <div class="sum-q">Keep this plan in the chat?</div>
+          <button class="btn btn-primary btn-wide" data-act="keep">Keep</button>
           <button class="btn btn-plain btn-wide" data-act="discard">Remove</button>
         </div>
 
         <div class="scrim scrim-pay" data-act="closePay"></div>
         <div class="sheet sheet-pay">
-          <div class="pay-head"><span class="pay-brand">${I.cash} Pay</span><button class="pay-x" data-act="closePay">✕</button></div>
+          <div class="pay-head"><span class="pay-brand">${I.cash} Pay</span><button class="pay-x" data-act="closePay" aria-label="Close">${I.xmark}</button></div>
           <div class="pay-card"><span class="pay-card-brand">Cash</span><span class="pay-card-bal">Balance $62.15</span></div>
           <div class="pay-rows">
             <div class="pay-row"><span>To</span><b>Maya</b></div>
@@ -178,7 +179,7 @@ export function createIPhone(who, act) {
             <div class="la-top"><span class="la-glyph">${I.spaces}</span><b class="la-name">Friday Hangout</b><span class="la-left">2h 55m left</span></div>
             <div class="la-place">${I.pin}<span class="la-place-t">Maya's apartment · 8 PM</span></div>
             <div class="la-row"><span class="la-avs">${PEOPLE.map((p) => avatar(p, 30, 'la-av')).join('')}</span><span class="la-here"><b class="la-herecount">1 of 5</b> here</span></div>
-            <div class="la-cost"><span class="la-cost-t">No costs yet</span></div>
+            <div class="la-cost"><span class="la-cost-t"></span><span class="la-cost-p"></span></div>
           </div>
           <div class="lock-bottom"><span class="lock-q">${I.flashlight}</span><span class="lock-q">${I.camera}</span></div>
         </div>
@@ -187,9 +188,9 @@ export function createIPhone(who, act) {
         <div class="alert glass">
           <div class="alert-ic">${I.location}</div>
           <div class="alert-t">Share your location with Friday Hangout?</div>
-          <div class="alert-m">Only people in this Space can see it, and it stops automatically when the Space ends at 11:00 PM.</div>
-          <button class="alert-b" data-act="locAllow">Share While Space Is Active</button>
-          <button class="alert-b alert-b-strong" data-act="locDecline">Don't Allow</button>
+          <div class="alert-m">People in this Space can see where you are until it ends at 11 PM.</div>
+          <button class="alert-b" data-act="locAllow">Share Until Space Ends</button>
+          <button class="alert-b alert-b-strong" data-act="locDecline">Don't Share</button>
         </div>
 
         ${islandHTML()}
@@ -206,6 +207,7 @@ export function createIPhone(who, act) {
   let lastSig = '';
   let islandTimer = null;
   let prevPhase = null;
+  let lastCardH = 0;
 
   // ---- inputs (free play) ----
   $$(root, 'input[data-field]').forEach((inp) => inp.addEventListener('input', () => act({ type: 'EDIT_DRAFT', field: inp.dataset.field, value: inp.value }, true)));
@@ -277,7 +279,7 @@ export function createIPhone(who, act) {
   }
 
   function expandIsland(ms = 3200) {
-    if (noAnim() || root.classList.contains('locked')) return;
+    if (noAnim() || root.matches('.locked, .pay-open, .alert-open, .expense-open, .create-open, .summary-open')) return;
     root.classList.add('isl-open');
     clearTimeout(islandTimer);
     islandTimer = setTimeout(() => root.classList.remove('isl-open'), ms);
@@ -321,7 +323,7 @@ export function createIPhone(who, act) {
     cls(root, 'locked', isJ && s.jordan.screen === 'lock');
     cls(root, 'alert-open', isJ && s.jordan.locPrompt);
     cls(root, 'pay-open', isJ && s.jordan.paySheet);
-    cls(root, 'pay-done', isJ && s.jordan.payStage === 'done');
+    cls(root, 'pay-success', isJ && s.jordan.payStage === 'done');
 
     // island
     cls(root, 'isl-live', live);
@@ -330,21 +332,24 @@ export function createIPhone(who, act) {
       const n = joined(sp).length;
       const tot = total(sp);
       const pp = perPerson(sp);
-      const costLine = tot ? `${sp.expenses[0].label} ${money(tot)} · ${money(pp)} each · ${paidCount(sp)} of ${n} paid` : 'No costs yet';
-      const costShort = tot ? `${money(pp)} each · ${paidCount(sp)}/${n} paid` : 'No costs yet';
+      const eachLine = tot ? `${money(pp)} each` : '';
+      const paidLine = tot ? `${paidCount(sp)} of ${n} paid` : '';
+      cls(root, 'has-tot', tot > 0);
       setText(q('.isl-here'), tot ? money(pp) : `${here}/${n}`);
       setText(q('.isx-name'), sp.name);
       setText(q('.isx-place'), `${sp.place} · ${sp.lockedTime || ''}`);
       setText(q('.isx-left'), timeLeft(s));
       setText(q('.isx-herecount'), `${here} of ${n}`);
-      setText(q('.isx-costtext'), costLine);
+      setText(q('.isx-costtext'), eachLine);
+      setText(q('.isx-costpaid'), paidLine);
       $$(root, '.isx-av').forEach((a) => { cls(a, 'dim', !sp.members[a.dataset.p].here); cls(a, 'gone', !sp.members[a.dataset.p].joined); });
       // lock screen live activity
       setText(q('.la-name'), sp.name);
       setText(q('.la-left'), timeLeft(s));
       setText(q('.la-place-t'), `${sp.place} · ${sp.lockedTime || ''}`);
       setText(q('.la-herecount'), `${here} of ${n}`);
-      setText(q('.la-cost-t'), costShort === 'No costs yet' ? 'No costs yet' : `${sp.expenses[0].label} ${money(tot)} · ${costShort}`);
+      setText(q('.la-cost-t'), eachLine);
+      setText(q('.la-cost-p'), paidLine);
       $$(root, '.la-av').forEach((a) => { cls(a, 'dim', !sp.members[a.dataset.p].here); cls(a, 'gone', !sp.members[a.dataset.p].joined); });
 
       const sig = `${here}|${paidCount(sp)}|${tot}`;
@@ -354,6 +359,7 @@ export function createIPhone(who, act) {
       updateCard(s, sp);
     } else {
       lastSig = '';
+      root.classList.remove('has-tot');
     }
     if (!live) { root.classList.remove('isl-open'); clearTimeout(islandTimer); }
     prevPhase = s.phase;
@@ -368,7 +374,7 @@ export function createIPhone(who, act) {
       card.dataset.state = state;
       scrollDown(true);
     }
-    setText($(card, '.sc-status'), { voting: 'Voting', locked: 'Locked in', live: 'Live now', ended: 'Ended' }[state]);
+    setText($(card, '.sc-status'), { voting: 'Voting', locked: 'Confirmed', live: 'Live', ended: 'Ended' }[state]);
     setText($(card, '.sc-title'), sp.name);
     setText($(card, '.sc-place-t'), sp.place);
     const best = bestTime(sp);
@@ -383,7 +389,7 @@ export function createIPhone(who, act) {
       cls(p, 'dim', !!sp.lockedTime && sp.lockedTime !== t);
     });
     const jn = joined(sp).length;
-    if (sp.lockedTime) setText($(card, '.sc-free-t'), `${voteCount(sp, sp.lockedTime)} of 5 free · locked for ${sp.lockedTime}`);
+    if (sp.lockedTime) setText($(card, '.sc-free-t'), `Tonight at ${sp.lockedTime}`);
     else setText($(card, '.sc-free-t'), voteCount(sp, best) ? `${voteCount(sp, best)} of 5 free at ${best}` : 'Waiting for the group to vote');
     $$(card, '.sc-av').forEach((a) => cls(a, 'gone', !sp.members[a.dataset.p].joined));
     setText($(card, '.sc-joined'), `${jn} joined`);
@@ -394,21 +400,21 @@ export function createIPhone(who, act) {
       const m = sp.members[p];
       let t = 'On the way';
       let k = 'way';
-      if (!m.joined) { t = 'Hasn’t joined'; k = 'none'; }
-      else if (m.here && m.location === 'on') { t = 'Here · sharing location'; k = 'here'; }
-      else if (m.here && m.location === 'declined') { t = 'Here · location off'; k = 'here-off'; }
+      if (!m.joined) { t = 'Not joined'; k = 'none'; }
       else if (m.here) { t = 'Here'; k = 'here'; }
-      else if (m.location === 'declined') { t = 'On the way · location off'; k = 'off'; }
-      if (sp.ended) { t = m.here ? 'Was here · sharing off' : 'Sharing off'; k = 'ended'; }
+      if (sp.ended) { t = ''; k = 'ended'; }
       setText($(r, '.ros-t'), t);
       r.dataset.k = k;
+      r.dataset.loc = m.location === 'on' && !sp.ended ? 'on' : '';
     });
     const tot = total(sp);
     const pp = perPerson(sp);
     const pc = paidCount(sp);
-    setText($(card, '.sc-cost-t'), tot ? `${sp.expenses[0].label} ${money(tot)} · ${money(pp)} each · ${pc} of ${jn} paid` : 'No costs yet');
+    setText($(card, '.sc-cost-t'), tot ? `${sp.expenses[0].label} · ${money(tot)}` : '');
+    setText($(card, '.sc-cost-e'), tot ? `${money(pp)} each` : '');
+    setText($(card, '.sc-cost-p'), tot ? `${pc} of ${jn} paid` : '');
     $(card, '.sc-cost-bar i').style.transform = `scaleX(${tot ? pc / jn : 0})`;
-    cls(card, 'has-cost', sp.costSplitOn || tot > 0);
+    cls(card, 'has-cost', tot > 0);
 
     const live = s.phase === 'live';
     const isMaya = who === 'Maya';
@@ -422,16 +428,17 @@ export function createIPhone(who, act) {
     setText($(card, '.sc-pay'), `Pay Maya ${money(pp)}`);
     $(card, '.sc-paid').hidden = !(tot > 0 && !isMaya && me.paid);
     $(card, '.sc-end').hidden = !(live && isMaya);
-    const foot = sp.ended
-      ? sp.kept === false ? 'Ended · removed from chat' : `Ended · ${pc === jn ? 'everyone settled' : `${pc} of ${jn} paid`}${sp.kept ? ' · plan kept' : ''}`
-      : live ? `Ends 11:00 PM · ${timeLeft(s)}` : 'Ends automatically at 11:00 PM';
+    const foot = !sp.ended ? 'Ends at 11 PM' : sp.kept ? 'Kept in chat' : sp.kept === false ? 'Removed from chat' : 'Ended';
     setText($(card, '.sc-foot-t'), foot);
     setText(q('.pay-amt-v'), money2(pp || 8));
     setText(q('.pay-for'), `${sp.expenses[0]?.label || 'Pizza'} · ${sp.name}`);
     setText(q('.exp-prev-t'), s.maya.expenseDraft.amount
       ? `${money(Number(s.maya.expenseDraft.amount) / jn)} each, split with ${jn} people`
       : `Split evenly with the ${jn} people who joined`);
-    setText(q('.sum-settled'), pc === jn ? 'Everyone’s settled up' : `${pc} of ${jn} paid back`);
+    setText(q('.sum-settled'), pc === jn ? 'Everyone paid' : `${pc} of ${jn} paid`);
+    // keep the card in view when it grows (cost row, action buttons)
+    const h = card.offsetHeight;
+    if (h !== lastCardH) { lastCardH = h; scrollDown(true); }
   }
 
   function syncInput(inp, v) {

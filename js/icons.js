@@ -13,7 +13,7 @@ export const I = {
   camera: svg('0 0 24 20', '<path d="M8.5 2h7l1.6 2.4H20a3 3 0 0 1 3 3V16a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3V7.4a3 3 0 0 1 3-3h2.9L8.5 2Zm3.5 5a4.6 4.6 0 1 0 0 9.2A4.6 4.6 0 0 0 12 7Z"/>'),
   photos: svg('0 0 24 24', '<g opacity=".95"><ellipse cx="12" cy="6.5" rx="3" ry="4.5" fill="#FFB800"/><ellipse cx="12" cy="17.5" rx="3" ry="4.5" fill="#5E5CE6"/><ellipse cx="6.5" cy="12" rx="4.5" ry="3" fill="#30B85A"/><ellipse cx="17.5" cy="12" rx="4.5" ry="3" fill="#FF375F"/></g>'),
   sticker: svg('0 0 24 24', '<path d="M12 2a10 10 0 1 0 10 10V12a10 10 0 0 0-10-10Zm-3.5 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM7 14.5h10a5 5 0 0 1-10 0Z"/>'),
-  cash: svg('0 0 24 24', '<circle cx="12" cy="12" r="10"/><path fill="#fff" d="M12.8 5.5v1.3c1.5.2 2.6 1 2.9 2.4l-1.9.5c-.2-.8-.8-1.2-1.8-1.2-1 0-1.6.4-1.6 1 0 .6.5.9 1.8 1.2 2.1.5 3.5 1.1 3.5 3 0 1.5-1.1 2.5-2.9 2.8v1.3h-1.6v-1.3c-1.8-.2-3-1.2-3.3-2.7l2-.5c.2 1 .9 1.5 2 1.5s1.8-.4 1.8-1.1c0-.6-.5-.9-1.9-1.2-2-.5-3.4-1.1-3.4-2.9 0-1.4 1.1-2.4 2.8-2.7V5.5h1.6Z"/>'),
+  cash: svg('0 0 24 24', '<circle cx="12" cy="12" r="10"/><path fill="var(--ic-cut, #fff)" d="M12.8 5.5v1.3c1.5.2 2.6 1 2.9 2.4l-1.9.5c-.2-.8-.8-1.2-1.8-1.2-1 0-1.6.4-1.6 1 0 .6.5.9 1.8 1.2 2.1.5 3.5 1.1 3.5 3 0 1.5-1.1 2.5-2.9 2.8v1.3h-1.6v-1.3c-1.8-.2-3-1.2-3.3-2.7l2-.5c.2 1 .9 1.5 2 1.5s1.8-.4 1.8-1.1c0-.6-.5-.9-1.9-1.2-2-.5-3.4-1.1-3.4-2.9 0-1.4 1.1-2.4 2.8-2.7V5.5h1.6Z"/>'),
   audio: svg('0 0 24 24', '<rect x="3" y="9" width="2.4" height="6" rx="1.2"/><rect x="7.6" y="5.5" width="2.4" height="13" rx="1.2"/><rect x="12.2" y="3" width="2.4" height="18" rx="1.2"/><rect x="16.8" y="7" width="2.4" height="10" rx="1.2"/>'),
   location: svg('0 0 24 24', '<path d="M20.6 3.4 3.8 10.6c-.9.4-.8 1.7.2 1.9l6.6 1 1 6.6c.2 1 1.5 1.1 1.9.2l7.2-16.8c.3-.7-.4-1.4-1.1-1.1Z"/>'),
   spaces: svg('0 0 24 24', '<circle cx="9" cy="12" r="6.2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="15" cy="12" r="6.2" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="1.7"/>'),
@@ -37,5 +37,6 @@ export const I = {
   lock: svg('0 0 20 24', '<rect x="2" y="10" width="16" height="13" rx="3"/><path d="M5.5 10V7a4.5 4.5 0 0 1 9 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/>'),
   globe: svg('0 0 24 24', '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 12h19M12 2.5c2.8 2.6 4 6 4 9.5s-1.2 6.9-4 9.5c-2.8-2.6-4-6-4-9.5s1.2-6.9 4-9.5Z" fill="none" stroke="currentColor" stroke-width="1.6"/>'),
   dots: svg('0 0 24 24', '<circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>'),
+  xmark: svg('0 0 20 20', '<path d="M5 5l10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'),
   sparkle: svg('0 0 24 24', '<path d="M12 2c.6 4.6 2.4 7.4 8 8.5v1C14.4 12.6 12.6 15.4 12 20h-.1c-.6-4.6-2.4-7.4-8-8.5v-1C9.5 9.4 11.3 6.6 11.9 2h.1Z"/>'),
 };

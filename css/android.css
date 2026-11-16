@@ -12,12 +12,12 @@
 .an-url-t { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .an-dots .ic { width: 18px; height: 18px; }
 .an-page { flex: 1; overflow: hidden; padding: 18px 20px; background: #fff; display: flex; flex-direction: column; }
-.wv-kicker { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #3367d6; text-transform: uppercase; letter-spacing: .4px; }
+.wv-kicker { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #3367d6; }
 .wv-kicker .ic { width: 17px; height: 17px; }
 .wv-title { font-size: 30px; font-weight: 700; margin-top: 8px; letter-spacing: -.5px; }
 .wv-place { display: flex; align-items: center; gap: 6px; color: #5f6368; font-size: 15px; margin-top: 4px; }
 .wv-place .ic { width: 11px; height: 14px; }
-.wv-h { font-size: 13px; font-weight: 600; color: #5f6368; text-transform: uppercase; letter-spacing: .4px; margin: 18px 0 8px; }
+.wv-h { font-size: 14px; font-weight: 600; color: #5f6368; margin: 18px 0 8px; }
 .wv-times { display: flex; flex-direction: column; gap: 8px; }
 .wv-time { display: grid; grid-template-columns: 56px 1fr 26px 22px; align-items: center; gap: 10px; height: 46px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #dadce0; text-align: left; font-size: 16px; font-weight: 600; transition: border-color .3s, background .3s; }
 .wv-bar { height: 6px; border-radius: 3px; background: #eceef2; overflow: hidden; }
@@ -33,6 +33,10 @@
 .wv-avs { display: flex; gap: 6px; }
 .wv-av.gone { opacity: .2; filter: grayscale(1); }
 .wv-cost { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #f1f3f4; font-size: 15px; }
+.wv-cost-r { display: flex; justify-content: space-between; font-weight: 600; }
+.wv-cost-e, .wv-cost-p { color: #5f6368; font-weight: 400; }
+.wv-cost-p:empty { display: none; }
+.has-lock .wv-time:not(.mine) .wv-chk { visibility: hidden; }
 .wv-pay { height: 42px; border-radius: 21px; background: #3367d6; color: #fff; font-weight: 600; font-size: 15px; }
 .wv-paid { display: flex; align-items: center; gap: 6px; color: #1e8e3e; font-weight: 600; }
 .wv-paid .ic { width: 16px; height: 16px; }

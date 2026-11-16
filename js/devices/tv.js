@@ -38,27 +38,26 @@ export function createTV() {
         <div class="tv-board">
           <div class="tvb-bg"></div>
           <div class="tvb-top">
-            <span class="tvb-badge">${I.spaces} Space · Live</span>
+            <span class="tvb-badge">${I.spaces} Live</span>
             <span class="tvb-clock">8:00</span>
           </div>
           <div class="tvb-title">Friday Hangout</div>
-          <div class="tvb-meta"><span>${I.clock}<b class="tvb-time">8:00 PM</b></span><span>${I.pin}<b class="tvb-place">Maya's apartment</b></span><span class="tvb-left">Ends 11:00 PM</span></div>
+          <div class="tvb-meta"><span>${I.clock}<b class="tvb-time">8:00 PM</b></span><span>${I.pin}<b class="tvb-place">Maya's apartment</b></span><span class="tvb-left">Ends at 11 PM</span></div>
           <div class="tvb-grid">
             <div class="tvb-tile tvb-people">
               <div class="tvb-tile-h"><span>Who's here</span><b class="tvb-herecount">1 of 5</b></div>
               <div class="tvb-avs">
-                ${PEOPLE.map((p) => `<div class="tvb-p" data-p="${p}">${avatar(p, 64)}<b>${p}</b><span class="tvb-p-s">On the way</span></div>`).join('')}
+                ${PEOPLE.map((p) => `<div class="tvb-p" data-p="${p}">${avatar(p, 80)}<b>${p}</b><span class="tvb-p-s">On the way</span></div>`).join('')}
               </div>
             </div>
             <div class="tvb-tile tvb-cost">
               <div class="tvb-tile-h"><span>Cost split</span><span class="tvb-cost-ic">${I.cash}</span></div>
               <div class="tvb-cost-big">—</div>
-              <div class="tvb-cost-sub">Nothing to split yet</div>
+              <div class="tvb-cost-sub">No expenses yet</div>
               <div class="tvb-cost-bar"><i></i></div>
               <div class="tvb-cost-paid">&nbsp;</div>
             </div>
           </div>
-          <div class="tvb-note">${I.locOff}<span class="tvb-note-t">Location off for Jordan</span></div>
         </div>
       </div>
     </div>
@@ -76,11 +75,10 @@ export function createTV() {
     cls(root, 'shelf-space', !!(sp && sp.lockedTime && s.phase === 'chat'));
     if (!sp) return;
     setText(q('.tvh-sp-name'), sp.name);
-    setText(q('.tvh-sp-sub'), `Tonight · ${sp.lockedTime || ''} · ${sp.place}`);
+    setText(q('.tvh-sp-sub'), `Tonight at ${sp.lockedTime || ''}`);
     setText(q('.tvb-title'), sp.name);
     setText(q('.tvb-time'), (sp.lockedTime || '8 PM').replace(' PM', ':00 PM'));
     setText(q('.tvb-place'), sp.place);
-    setText(q('.tvb-left'), `Ends 11:00 PM · ${timeLeft(s)}`);
     const jn = joined(sp).length;
     setText(q('.tvb-herecount'), `${hereList(sp).length} of ${jn}`);
     $$(root, '.tvb-p').forEach((n) => {
@@ -93,10 +91,9 @@ export function createTV() {
     const pc = paidCount(sp);
     cls(q('.tvb-cost'), 'has', tot > 0);
     setText(q('.tvb-cost-big'), tot ? `${money(perPerson(sp))} each` : '—');
-    setText(q('.tvb-cost-sub'), tot ? `${sp.expenses[0].label} ${money(tot)} · paid by Maya` : 'Nothing to split yet');
+    setText(q('.tvb-cost-sub'), tot ? `${sp.expenses[0].label} · ${money(tot)}` : 'No expenses yet');
     setText(q('.tvb-cost-paid'), tot ? `${pc} of ${jn} paid` : ' ');
     q('.tvb-cost-bar i').style.transform = `scaleX(${tot ? pc / jn : 0})`;
-    cls(q('.tvb-note'), 'show', sp.members.Jordan.location === 'declined');
   }
 
   return { root, update };

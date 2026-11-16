@@ -66,7 +66,6 @@ input { font: inherit; }
   background: linear-gradient(180deg, color-mix(in srgb, var(--c) 78%, #fff), var(--c));
   color: #fff;
   font: 600 calc(var(--s) * .44) / 1 var(--font-round);
-  box-shadow: 0 0 0 calc(var(--s) * .06) rgba(255, 255, 255, .9);
   transition: opacity var(--d) var(--ease-out), filter var(--d) var(--ease-out), transform var(--d) var(--spring);
 }
 
