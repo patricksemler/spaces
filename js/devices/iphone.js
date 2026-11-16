@@ -43,7 +43,7 @@ function cardHTML(me) {
     <div class="sc-title">Friday Hangout</div>
     <div class="sc-place">${I.pin}<span class="sc-place-t">Maya's apartment</span></div>
     <div class="sc-times">
-      ${TIMES.map((t) => `<button class="sc-pill" data-time="${t}" data-act="vote" data-arg="${t}"><span class="pill-t">${t}</span><span class="pill-n">0</span><span class="pill-check">${I.check}</span></button>`).join('')}
+      ${TIMES.map((t) => `<button class="sc-pill" data-time="${t}" data-act="vote" data-arg="${t}"><span class="pill-t">${t}</span><span class="pill-n">0</span></button>`).join('')}
     </div>
     <div class="sc-free"><span class="sc-free-t">1 of 5 free at 8 PM</span></div>
     <div class="sc-avs">${PEOPLE.map((p) => avatar(p, 24, 'sc-av')).join('')}<span class="sc-joined">1 joined</span></div>
@@ -209,7 +209,7 @@ export function createIPhone(who, act) {
   let prevPhase = null;
   let lastCardH = 0;
 
-  // ---- inputs (free play) ----
+  // ---- inputs ----
   $$(root, 'input[data-field]').forEach((inp) => inp.addEventListener('input', () => act({ type: 'EDIT_DRAFT', field: inp.dataset.field, value: inp.value }, true)));
   const expLabel = q('.in-exp-label');
   expLabel.addEventListener('input', () => act({ type: 'EDIT_EXPENSE', field: 'label', value: expLabel.value }, true));

@@ -115,13 +115,10 @@
 .pill-t { font-size: 14.5px; font-weight: 600; }
 .pill-n { font-size: 11.5px; color: var(--label2); font-variant-numeric: tabular-nums; }
 .pill-n::after { content: " free"; }
-.pill-check { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--green); color: #fff; display: grid; place-items: center; transform: scale(0); transition: transform .45s var(--spring); }
-.pill-check .ic { width: 11px; height: 11px; }
 .sc-pill.mine { background: rgba(0, 122, 255, .1); border-color: var(--ios-blue); color: var(--ios-blue); }
 .sc-pill.mine .pill-n { color: var(--ios-blue); }
 .sc-pill.locked { background: var(--green); border-color: var(--green); color: #fff; }
 .sc-pill.locked .pill-n { color: rgba(255, 255, 255, .9); }
-.sc-pill.locked .pill-check { transform: scale(1); background: #fff; color: var(--green); }
 .sc-pill.dim { opacity: .38; }
 [data-state="live"] .sc-times, [data-state="ended"] .sc-times { display: none; }
 .sc-free { font-size: 13.5px; font-weight: 600; color: #1f8f3d; display: flex; align-items: center; gap: 6px; }
