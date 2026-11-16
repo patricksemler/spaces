@@ -1,6 +1,6 @@
 # Spaces: interactive prototype
 
-**Live:** https://patricksemler.dev/spaces/
+**Live:** https://spaces.patricksemler.dev (also https://patricksemler.dev/spaces/)
 
 Spaces is a temporary Space that starts in the group chat, so a friend group can plan and run one hangout across their Apple devices. When the hangout ends, it turns itself off.
 

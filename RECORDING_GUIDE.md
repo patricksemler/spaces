@@ -3,7 +3,7 @@
 Use the Devpost video outline from SUBMISSION.md. The prototype covers the demo section, roughly 1:30 of the video.
 
 ## Setup (2 min)
-1. Use Chrome on a laptop, full screen (⌃⌘F), with the window at 16:9 if you can. Open https://patricksemler.dev/spaces/
+1. Use Chrome on a laptop, full screen (⌃⌘F), with the window at 16:9 if you can. Open https://spaces.patricksemler.dev
 2. Press **H** to hide the step bar and captions. The keyboard shortcuts still work while they're hidden.
 3. Press **1** to reset to beat 1 (Today).
 4. Start the screen recorder (QuickTime → New Screen Recording, or ⌘⇧5) and record the browser window.
