@@ -228,6 +228,10 @@
   transform: translateY(calc(100% + 40px)); transition: transform .62s var(--spring-soft);
   box-shadow: 0 -10px 40px rgba(0, 0, 0, .15);
 }
+/* The spring overshoots past its resting position, lifting the sheet a few px off
+   the screen's bottom edge. This extends the sheet's own background below it so
+   the dimmed app never shows through as a grey strip. (Clipped by the screen.) */
+.sheet:not(.sheet-pay)::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 60px; background: inherit; }
 .grabber { width: 36px; height: 5px; border-radius: 3px; background: rgba(60, 60, 67, .3); margin: 0 auto 10px; }
 .create-open .sheet-create, .expense-open .sheet-expense, .summary-open .sheet-summary, .pay-open .sheet-pay { transform: none; }
 .create-open .app-messages { filter: brightness(.85); }
